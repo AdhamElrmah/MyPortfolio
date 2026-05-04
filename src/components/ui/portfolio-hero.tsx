@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import adhamImage from "../../assets/adham.png";
+import { FloatingPaths } from "./background-paths";
 
 // Inline Button component
 const Button = React.forwardRef<
@@ -89,14 +90,24 @@ const BlurText: React.FC<BlurTextProps> = ({
 };
 
 export default function Component() {
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.matchMedia("(prefers-color-scheme: dark)").matches;
+    }
+    return false;
+  });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    document.documentElement.classList.add("dark");
+    if (isDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
   }, []);
+
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -240,9 +251,15 @@ export default function Component() {
       </header>
 
       {/* Hero Section */}
-      <main className="relative min-h-screen flex flex-col">
+      <main className="relative min-h-screen flex flex-col overflow-hidden">
+        {/* Animated Background Paths */}
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <FloatingPaths position={1} />
+          <FloatingPaths position={-1} />
+        </div>
+
         {/* Centered Main Name - Always Perfectly Centered */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4 z-10">
           <div className="relative text-center">
             <div>
               <BlurText
@@ -285,7 +302,7 @@ export default function Component() {
         </div>
 
         {/* Tagline - Proper Distance Below Hero */}
-        <div className="absolute bottom-16 sm:bottom-20 md:bottom-24 lg:bottom-32 xl:bottom-36 left-1/2 -translate-x-1/2 w-full px-6">
+        <div className="absolute bottom-16 sm:bottom-20 md:bottom-24 lg:bottom-32 xl:bottom-36 left-1/2 -translate-x-1/2 w-full px-6 z-10">
           <div className="flex justify-center">
             <BlurText
               text="Designing human experiences in code."
@@ -301,7 +318,7 @@ export default function Component() {
         {/* Scroll Indicator */}
         <button
           type="button"
-          className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 transition-colors duration-300"
+          className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 transition-colors duration-300 z-10"
           aria-label="Scroll down"
         >
           <ChevronDown className="w-5 h-5 md:w-8 md:h-8 text-neutral-500 hover:text-black dark:hover:text-white transition-colors duration-300" />
