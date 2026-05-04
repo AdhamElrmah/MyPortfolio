@@ -51,17 +51,29 @@ export function FloatingPaths({ position }: { position: number }) {
 
 export function BackgroundPaths({
     children,
+    title,
 }: {
     children?: React.ReactNode;
+    title?: string;
 }) {
     return (
-        <div className="relative min-h-screen w-full overflow-hidden bg-white dark:bg-neutral-950">
+        <div className="relative min-h-screen w-full overflow-hidden bg-white dark:bg-neutral-950 flex flex-col items-center justify-center">
             <div className="absolute inset-0 z-0">
                 <FloatingPaths position={1} />
                 <FloatingPaths position={-1} />
             </div>
 
-            <div className="relative z-10 w-full h-full">
+            <div className="relative z-10 container mx-auto px-4 md:px-6 text-center">
+                {title && (
+                    <motion.h1 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                        className="text-5xl md:text-8xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-neutral-900 to-neutral-700 dark:from-neutral-50 dark:to-neutral-400 mb-8"
+                    >
+                        {title}
+                    </motion.h1>
+                )}
                 {children}
             </div>
         </div>
