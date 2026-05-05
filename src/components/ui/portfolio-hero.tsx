@@ -1,7 +1,85 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
+import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
 import adhamImage from "../../assets/adham.png";
 import { FloatingPaths } from "./background-paths";
+
+// Magnetic wrapper for the menu button
+const Magnetic = ({ children }: { children: React.ReactNode }) => {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const springX = useSpring(x, { stiffness: 150, damping: 15 });
+  const springY = useSpring(y, { stiffness: 150, damping: 15 });
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const { clientX, clientY, currentTarget } = e;
+    const { left, top, width, height } = currentTarget.getBoundingClientRect();
+    const centerX = left + width / 2;
+    const centerY = top + height / 2;
+    x.set((clientX - centerX) * 0.35);
+    y.set((clientY - centerY) * 0.35);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ x: springX, y: springY }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+// Custom Animated Menu Toggle
+const MenuToggle = React.forwardRef<
+  HTMLButtonElement,
+  {
+    isOpen: boolean;
+    onClick: () => void;
+    isDark: boolean;
+  }
+>(({ isOpen, onClick, isDark }, ref) => {
+  return (
+    <Magnetic>
+      <button
+        ref={ref}
+        onClick={onClick}
+        className="group relative flex h-12 w-12 items-center justify-center rounded-full z-50 focus:outline-none"
+        aria-label={isOpen ? "Close menu" : "Open menu"}
+      >
+        <div className="flex h-5 w-8 flex-col items-end justify-between px-1">
+          <motion.span
+            animate={isOpen ? { rotate: 45, y: 9, width: "100%" } : { rotate: 0, y: 0, width: "100%" }}
+            className={`h-[2px] rounded-full transition-colors ${isDark ? "bg-white" : "bg-black"}`}
+            transition={{ type: "spring", stiffness: 260, damping: 20 }}
+          />
+          <motion.span
+            animate={
+              isOpen
+                ? { opacity: 0, x: 20 }
+                : { opacity: 1, x: 0, width: "70%" }
+            }
+            whileHover={!isOpen ? { width: "100%" } : {}}
+            className={`h-[2px] rounded-full transition-colors ${isDark ? "bg-white" : "bg-black"}`}
+            transition={{ type: "spring", stiffness: 260, damping: 20 }}
+          />
+          <motion.span
+            animate={isOpen ? { rotate: -45, y: -9, width: "100%" } : { rotate: 0, y: 0, width: "100%" }}
+            className={`h-[2px] rounded-full transition-colors ${isDark ? "bg-white" : "bg-black"}`}
+            transition={{ type: "spring", stiffness: 260, damping: 20 }}
+          />
+        </div>
+      </button>
+    </Magnetic>
+  );
+});
+MenuToggle.displayName = "MenuToggle";
 
 // Inline Button component
 const Button = React.forwardRef<
@@ -114,6 +192,34 @@ export default function Component() {
     }
   }, [isDark]);
 
+  const [activeSection, setActiveSection] = useState("home");
+
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: "-40% 0px -40% 0px",
+      threshold: 0,
+    };
+
+    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersect, observerOptions);
+
+    const sections = ["home", "about", "projects", "experience", "education", "writing", "contact"];
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -142,13 +248,13 @@ export default function Component() {
   };
 
   const menuItems = [
-    { label: "HOME", href: "#", highlight: true },
-    { label: "ABOUT", href: "#about" },
-    { label: "PROJECTS", href: "#projects" },
-    { label: "EXPERIENCE", href: "#experience" },
-    { label: "EDUCATION", href: "#education" },
-    { label: "WRITING", href: "#writing" },
-    { label: "CONTACT", href: "#contact" },
+    { label: "HOME", href: "#home", id: "home" },
+    { label: "ABOUT", href: "#about", id: "about" },
+    { label: "PROJECTS", href: "#projects", id: "projects" },
+    { label: "EXPERIENCE", href: "#experience", id: "experience" },
+    { label: "EDUCATION", href: "#education", id: "education" },
+    { label: "WRITING", href: "#writing", id: "writing" },
+    { label: "CONTACT", href: "#contact", id: "contact" },
   ];
 
   return (
@@ -164,63 +270,60 @@ export default function Component() {
         <nav className="flex items-center justify-between max-w-screen-2xl mx-auto">
           {/* Menu Button */}
           <div className="relative">
-            <button
+            <MenuToggle
               ref={buttonRef}
-              type="button"
-              className="p-2 transition-colors duration-300 z-50 text-neutral-500 hover:text-black dark:hover:text-white"
-              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+              isOpen={isMenuOpen}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              {isMenuOpen ? (
-                <X
-                  className="w-8 h-8 transition-colors duration-300"
-                  strokeWidth={2}
-                />
-              ) : (
-                <Menu
-                  className="w-8 h-8 transition-colors duration-300"
-                  strokeWidth={2}
-                />
-              )}
-            </button>
+              isDark={isDark}
+            />
 
-            {isMenuOpen && (
-              <div
-                ref={menuRef}
-                className="absolute top-full left-0 w-[200px] md:w-[240px] border-none shadow-2xl mt-2 ml-4 p-4 rounded-lg z-[100]"
-                style={{
-                  backgroundColor: isDark ? "hsl(0 0% 0%)" : "hsl(0 0% 98%)",
-                }}
-              >
-                {menuItems.map((item) => (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    className="block text-lg md:text-xl font-bold tracking-tight py-1.5 px-2 cursor-pointer transition-colors duration-300"
-                    style={{
-                      color: item.highlight
-                        ? "#C3E41D"
-                        : isDark
-                          ? "hsl(0 0% 100%)"
-                          : "hsl(0 0% 10%)",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.color = "#C3E41D";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.color = item.highlight
-                        ? "#C3E41D"
-                        : isDark
-                          ? "hsl(0 0% 100%)"
-                          : "hsl(0 0% 10%)";
-                    }}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {item.label}
-                  </a>
-                ))}
-              </div>
-            )}
+            <AnimatePresence>
+              {isMenuOpen && (
+                <motion.div
+                  ref={menuRef}
+                  initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                  className="absolute top-full left-0 w-[200px] md:w-[240px] border-none shadow-2xl mt-2 ml-4 p-4 rounded-xl z-[100] backdrop-blur-md"
+                  style={{
+                    backgroundColor: isDark ? "rgba(0, 0, 0, 0.8)" : "rgba(255, 255, 255, 0.8)",
+                    border: isDark ? "1px solid rgba(255,255,255,0.1)" : "1px solid rgba(0,0,0,0.1)",
+                  }}
+                >
+                  {menuItems.map((item, index) => (
+                    <motion.a
+                      key={item.label}
+                      href={item.href}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                      className="block text-lg md:text-xl font-bold tracking-tight py-1.5 px-2 cursor-pointer transition-colors duration-300"
+                      style={{
+                        color: activeSection === item.id
+                          ? "#C3E41D"
+                          : isDark
+                            ? "hsl(0 0% 100%)"
+                            : "hsl(0 0% 10%)",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.color = "#C3E41D";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.color = activeSection === item.id
+                          ? "#C3E41D"
+                          : isDark
+                            ? "hsl(0 0% 100%)"
+                            : "hsl(0 0% 10%)";
+                      }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {item.label}
+                    </motion.a>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           {/* Signature */}
@@ -256,7 +359,7 @@ export default function Component() {
       </header>
 
       {/* Hero Section */}
-      <main className="relative min-h-screen flex flex-col overflow-hidden">
+      <main id="home" className="relative min-h-screen flex flex-col overflow-hidden">
         {/* Animated Background Paths */}
         <div className="absolute inset-0 z-0 pointer-events-none">
           <FloatingPaths position={1} />
