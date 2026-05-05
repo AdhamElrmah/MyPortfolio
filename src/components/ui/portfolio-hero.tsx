@@ -92,9 +92,13 @@ const BlurText: React.FC<BlurTextProps> = ({
 export default function Component() {
   const [isDark, setIsDark] = useState(() => {
     if (typeof window !== "undefined") {
-      return window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const savedTheme = localStorage.getItem("portfolio-theme");
+      if (savedTheme !== null) {
+        return savedTheme === "dark";
+      }
+      return true; // Default to dark
     }
-    return false;
+    return true;
   });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -103,11 +107,12 @@ export default function Component() {
   useEffect(() => {
     if (isDark) {
       document.documentElement.classList.add("dark");
+      localStorage.setItem("portfolio-theme", "dark");
     } else {
       document.documentElement.classList.remove("dark");
+      localStorage.setItem("portfolio-theme", "light");
     }
-  }, []);
-
+  }, [isDark]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -138,12 +143,12 @@ export default function Component() {
 
   const menuItems = [
     { label: "HOME", href: "#", highlight: true },
-    { label: "ABOUT", href: "#" },
-    { label: "PROJECTS", href: "#" },
-    { label: "EXPERIENCE", href: "#" },
-    { label: "EDUCATION", href: "#" },
-    { label: "WRITING", href: "#" },
-    { label: "CONTACT", href: "#" },
+    { label: "ABOUT", href: "#about" },
+    { label: "PROJECTS", href: "#projects" },
+    { label: "EXPERIENCE", href: "#experience" },
+    { label: "EDUCATION", href: "#education" },
+    { label: "WRITING", href: "#writing" },
+    { label: "CONTACT", href: "#contact" },
   ];
 
   return (
@@ -316,13 +321,13 @@ export default function Component() {
         </div>
 
         {/* Scroll Indicator */}
-        <button
-          type="button"
+        <a
+          href="#about"
           className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 transition-colors duration-300 z-10"
           aria-label="Scroll down"
         >
           <ChevronDown className="w-5 h-5 md:w-8 md:h-8 text-neutral-500 hover:text-black dark:hover:text-white transition-colors duration-300" />
-        </button>
+        </a>
       </main>
     </div>
   );
