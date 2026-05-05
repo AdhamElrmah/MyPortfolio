@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { ProjectCard } from "../features/projects/ProjectCard";
 import { projects } from "../../data/projects";
 
@@ -28,12 +29,32 @@ export const Projects: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-          {projects.map((project) => (
+          {projects.slice(0, 4).map((project) => (
             <ProjectCard 
               key={project.id} 
               project={project} 
             />
           ))}
+        </div>
+
+        <div className="mt-20 text-center">
+          <Link 
+            to="/projects" 
+            className="inline-flex items-center gap-4 py-4 px-12 rounded-full border border-[#C3E41D] text-[#C3E41D] font-bold tracking-[0.2em] uppercase text-xs hover:bg-[#C3E41D] hover:text-black transition-all shadow-[0_0_20px_rgba(195,228,29,0.1)] group"
+          >
+            Explore Full Archive
+            <svg 
+              className="w-4 h-4 group-hover:translate-x-1 transition-transform" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="3" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </Link>
         </div>
       </div>
     </section>

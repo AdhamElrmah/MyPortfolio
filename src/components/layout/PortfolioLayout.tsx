@@ -8,7 +8,15 @@ import { useActiveSection } from "../../hooks/useActiveSection";
 
 import { useLocation } from "react-router-dom";
 
-const sectionIds = ["home", "about", "projects", "experience", "education", "writing", "contact"];
+const sectionIds = [
+  "home",
+  "about",
+  "projects",
+  "experience",
+  "education",
+  "writing",
+  "contact",
+];
 
 export const PortfolioLayout: React.FC = () => {
   const { isDark, toggleTheme } = useTheme();
@@ -34,10 +42,10 @@ export const PortfolioLayout: React.FC = () => {
         color: isDark ? "hsl(0 0% 100%)" : "hsl(0 0% 10%)",
       }}
     >
-      <Navbar 
-        isDark={isDark} 
-        toggleTheme={toggleTheme} 
-        activeSection={activeSection} 
+      <Navbar
+        isDark={isDark}
+        toggleTheme={toggleTheme}
+        activeSection={activeSection}
       />
       <div className="w-full">
         <Hero />
