@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import aboutImage from "../../assets/about.png";
 
-export default function AboutSection() {
+export const About: React.FC = () => {
   return (
     <section
       id="about"
@@ -139,4 +139,4 @@ export default function AboutSection() {
       </div>
     </section>
   );
-}
+};
