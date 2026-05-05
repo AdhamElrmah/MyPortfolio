@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, useMemo } from "react";
 import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
 import adhamImage from "../../assets/adham.png";
-import { FloatingPaths } from "./background-paths";
 
 // Magnetic wrapper for the menu button
 const Magnetic = ({ children }: { children: React.ReactNode }) => {
@@ -197,8 +196,8 @@ export default function Component() {
   useEffect(() => {
     const observerOptions = {
       root: null,
-      rootMargin: "-40% 0px -40% 0px",
-      threshold: 0,
+      rootMargin: "-20% 0px -30% 0px",
+      threshold: 0.1,
     };
 
     const handleIntersect = (entries: IntersectionObserverEntry[]) => {
@@ -360,11 +359,7 @@ export default function Component() {
 
       {/* Hero Section */}
       <main id="home" className="relative min-h-screen flex flex-col overflow-hidden">
-        {/* Animated Background Paths */}
-        <div className="absolute inset-0 z-0 pointer-events-none">
-          <FloatingPaths position={1} />
-          <FloatingPaths position={-1} />
-        </div>
+
 
         {/* Centered Main Name - Always Perfectly Centered */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4 z-10">
