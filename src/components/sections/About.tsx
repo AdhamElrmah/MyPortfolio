@@ -99,7 +99,7 @@ export const About: React.FC = () => {
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row sm:justify-center lg:justify-start gap-8 sm:gap-12 mt-8 lg:mt-6">
+          <div className="grid grid-cols-3 sm:justify-center lg:flex lg:justify-start gap-8 sm:gap-12 mt-8 lg:mt-6">
             <div className="group">
               <h4 className="text-[#C3E41D] text-2xl lg:text-xl xl:text-3xl font-bold mb-1 group-hover:translate-x-1 transition-transform">
                 02+
@@ -126,8 +126,11 @@ export const About: React.FC = () => {
             </div>
           </div>
 
-          <motion.div className="mt-8 lg:mt-6 flex justify-center lg:justify-start  ">
-            <button className="px-10 py-4 rounded-full border border-[#C3E41D] cursor-pointer text-[#C3E41D] font-bold text-xs tracking-[0.2em] uppercase hover:bg-[#C3E41D] hover:text-black transition-all shadow-[0_0_20px_rgba(195,228,29,0.1)]">
+          <motion.div className="mt-8 lg:mt-6 flex justify-center lg:justify-start">
+            <button
+              onClick={() => document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' })}
+              className="px-10 py-4 rounded-full border border-[#C3E41D] cursor-pointer text-[#C3E41D] font-bold text-xs tracking-[0.2em] uppercase hover:bg-[#C3E41D] hover:text-black transition-all shadow-[0_0_20px_rgba(195,228,29,0.1)]"
+            >
               Discover My Journey
             </button>
           </motion.div>

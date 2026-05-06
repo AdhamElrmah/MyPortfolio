@@ -78,15 +78,8 @@ export const Projects: React.FC = () => {
         {/* ── Project grid (remaining) ────────── */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {rest.map((project, i) => (
-            <div
-              key={project.id}
-              className={i >= 2 ? "hidden lg:block" : ""}
-            >
-              <ProjectCard
-                project={project}
-                variant="default"
-                index={i + 1}
-              />
+            <div key={project.id} className={i >= 2 ? "hidden lg:block" : ""}>
+              <ProjectCard project={project} variant="default" index={i + 1} />
             </div>
           ))}
         </div>

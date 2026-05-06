@@ -213,11 +213,8 @@ export const AllProjectsPage: React.FC = () => {
             {/* Decorative gradient */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[1px] bg-gradient-to-r from-transparent via-[#C3E41D]/40 to-transparent" />
 
-            <h3
-              className="text-2xl md:text-3xl font-bold mb-4 font-['Fira_Code'] tracking-tight"
-            >
-              Have a project in{" "}
-              <span className="text-[#C3E41D]">mind</span>?
+            <h3 className="text-2xl md:text-3xl font-bold mb-4 font-['Fira_Code'] tracking-tight">
+              Have a project in <span className="text-[#C3E41D]">mind</span>?
             </h3>
             <p className="text-neutral-500 dark:text-neutral-400/80 font-['Antic'] text-sm md:text-base mb-8 max-w-md mx-auto">
               I'm always open to new opportunities and exciting collaborations.

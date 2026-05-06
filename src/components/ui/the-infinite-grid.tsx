@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { 
   motion, 
@@ -7,13 +7,28 @@ import {
   useAnimationFrame 
 } from "framer-motion";
 
+const LG_BREAKPOINT = 1024;
+
 export const InfiniteGrid = ({ className, children }: { className?: string, children?: React.ReactNode }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+
+  /* ── Detect if we're on a large screen ────────── */
+  const [isDesktop, setIsDesktop] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth >= LG_BREAKPOINT : true
+  );
+
+  useEffect(() => {
+    const mql = window.matchMedia(`(min-width: ${LG_BREAKPOINT}px)`);
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, []);
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDesktop) return;
     const { left, top } = e.currentTarget.getBoundingClientRect();
     mouseX.set(e.clientX - left);
     mouseY.set(e.clientY - top);
@@ -26,6 +41,7 @@ export const InfiniteGrid = ({ className, children }: { className?: string, chil
   const speedY = 0.5;
 
   useAnimationFrame(() => {
+    if (!isDesktop) return;           // skip the loop entirely on tablet/mobile
     const currentX = gridOffsetX.get();
     const currentY = gridOffsetY.get();
     gridOffsetX.set((currentX + speedX) % 40);
@@ -43,15 +59,20 @@ export const InfiniteGrid = ({ className, children }: { className?: string, chil
         className
       )}
     >
-      <div className="absolute inset-0 z-0 opacity-[0.05]">
-        <GridPattern offsetX={gridOffsetX} offsetY={gridOffsetY} />
-      </div>
-      <motion.div 
-        className="absolute inset-0 z-0 opacity-40"
-        style={{ maskImage, WebkitMaskImage: maskImage }}
-      >
-        <GridPattern offsetX={gridOffsetX} offsetY={gridOffsetY} />
-      </motion.div>
+      {/* Grid animation — desktop only */}
+      {isDesktop && (
+        <>
+          <div className="absolute inset-0 z-0 opacity-[0.05]">
+            <GridPattern offsetX={gridOffsetX} offsetY={gridOffsetY} />
+          </div>
+          <motion.div 
+            className="absolute inset-0 z-0 opacity-40"
+            style={{ maskImage, WebkitMaskImage: maskImage }}
+          >
+            <GridPattern offsetX={gridOffsetX} offsetY={gridOffsetY} />
+          </motion.div>
+        </>
+      )}
 
       {/* Glow Effects */}
       <div className="absolute inset-0 pointer-events-none z-0">
