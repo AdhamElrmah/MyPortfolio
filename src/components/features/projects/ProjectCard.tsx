@@ -5,62 +5,161 @@ import type { Project } from "../../../types/project";
 
 interface ProjectCardProps {
   project: Project;
+  variant?: "featured" | "default";
+  index?: number;
 }
 
-export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
+export const ProjectCard: React.FC<ProjectCardProps> = ({
+  project,
+  variant = "default",
+  index = 0,
+}) => {
   const navigate = useNavigate();
+  const isFeatured = variant === "featured";
 
   return (
-    <motion.div
+    <motion.article
       onClick={() => navigate(`/project/${project.id}`)}
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{
+        duration: 0.7,
+        delay: index * 0.12,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      }}
       className="group relative cursor-pointer"
     >
-      <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-800/50 border border-neutral-200 dark:border-white/5 mb-6">
-        {/* Subtle Overlay */}
-        <div className="absolute inset-0 z-10 bg-black/0 group-hover:bg-black/20 transition-colors duration-500" />
-        
-        {/* Project Image */}
-        <motion.img
-          src={project.image}
-          alt={project.title}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-        />
+      <div
+        className={`relative overflow-hidden rounded-2xl border border-neutral-200 dark:border-white/[0.06] bg-white dark:bg-[#0d0d0d] transition-all duration-500 hover:border-[#C3E41D]/30 hover:shadow-[0_8px_60px_rgba(195,228,29,0.06)] ${
+          isFeatured ? "lg:flex lg:items-stretch" : ""
+        }`}
+      >
+        {/* ─── Image Area ─────────────────────────── */}
+        <div
+          className={`relative overflow-hidden ${
+            isFeatured
+              ? "aspect-[16/10] lg:aspect-auto lg:w-[55%] lg:min-h-[420px]"
+              : "aspect-[16/10]"
+          }`}
+        >
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
 
-        {/* Floating Category Tag */}
-        <div className="absolute top-4 left-4 z-20">
-          <span className="px-3 py-1.5 backdrop-blur-md bg-white/10 text-white text-[9px] font-mono tracking-widest uppercase border border-white/20 rounded-full">
-            {project.category}
-          </span>
+          {/* Image */}
+          <img
+            src={project.image}
+            alt={project.title}
+            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+          />
+
+          {/* Category badge on image */}
+          <div className="absolute top-4 left-4 z-20">
+            <span className="px-3 py-1.5 backdrop-blur-md bg-black/40 dark:bg-white/10 text-white text-[9px] font-mono tracking-[0.15em] uppercase border border-white/15 rounded-full">
+              {project.category}
+            </span>
+          </div>
+
+          {/* Project number on image */}
+          <div className="absolute bottom-4 right-4 z-20">
+            <span
+              className="text-white/20 text-5xl lg:text-6xl font-bold"
+              style={{ fontFamily: "'Fira Code', monospace" }}
+            >
+              {String(project.id).padStart(2, "0")}
+            </span>
+          </div>
+        </div>
+
+        {/* ─── Content Area ───────────────────────── */}
+        <div
+          className={`relative p-6 md:p-8 ${
+            isFeatured
+              ? "lg:w-[45%] lg:flex lg:flex-col lg:justify-between lg:p-10"
+              : ""
+          }`}
+        >
+          {/* Accent corner decoration */}
+          <div className="absolute top-0 right-0 w-16 h-16 overflow-hidden rounded-tr-2xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+            <div className="absolute top-0 right-0 w-[1px] h-10 bg-gradient-to-b from-[#C3E41D]/50 to-transparent" />
+            <div className="absolute top-0 right-0 h-[1px] w-10 bg-gradient-to-l from-[#C3E41D]/50 to-transparent" />
+          </div>
+
+          <div>
+            {/* Industry tag */}
+            {project.industry && (
+              <span className="text-[10px] font-mono tracking-[0.2em] uppercase text-[#C3E41D]/70 mb-3 block">
+                {project.industry}
+              </span>
+            )}
+
+            {/* Title */}
+            <h3
+              className={`font-bold font-['Fira_Code'] tracking-tight leading-tight mb-3 group-hover:text-[#C3E41D] transition-colors duration-300 ${
+                isFeatured
+                  ? "text-2xl md:text-3xl lg:text-3xl"
+                  : "text-xl md:text-2xl"
+              }`}
+            >
+              {project.title}
+            </h3>
+
+            {/* Description */}
+            <p
+              className={`text-neutral-500 dark:text-neutral-300/70 font-['Antic'] leading-relaxed mb-5 ${
+                isFeatured
+                  ? "text-sm md:text-base max-w-md"
+                  : "text-sm line-clamp-2"
+              }`}
+            >
+              {project.description}
+            </p>
+
+            {/* Tech tags */}
+            <div className="flex flex-wrap gap-1.5 mb-5">
+              {project.tech.slice(0, isFeatured ? 6 : 4).map((t) => (
+                <span
+                  key={t}
+                  className="text-[9px] font-mono px-2 py-1 rounded-md bg-neutral-100 dark:bg-white/[0.05] text-neutral-500 dark:text-neutral-400 border border-neutral-200 dark:border-white/[0.06] group-hover:border-[#C3E41D]/20 group-hover:text-neutral-700 dark:group-hover:text-neutral-300 transition-all duration-300"
+                >
+                  {t}
+                </span>
+              ))}
+              {project.tech.length > (isFeatured ? 6 : 4) && (
+                <span className="text-[9px] font-mono px-2 py-1 rounded-md text-neutral-400 dark:text-neutral-500">
+                  +{project.tech.length - (isFeatured ? 6 : 4)}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Bottom bar: role + action */}
+          <div className="flex items-center justify-between pt-4 border-t border-neutral-100 dark:border-white/[0.05]">
+            <div className="flex items-center gap-3">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#C3E41D]" />
+              <span className="text-[11px] font-mono text-neutral-400 dark:text-neutral-500 uppercase tracking-wider">
+                {project.role.length > 28
+                  ? project.role.slice(0, 28) + "…"
+                  : project.role}
+              </span>
+            </div>
+
+            <div className="w-10 h-10 rounded-full border border-neutral-200 dark:border-white/[0.08] flex items-center justify-center group-hover:bg-[#C3E41D] group-hover:border-[#C3E41D] transition-all duration-400 group-hover:shadow-[0_0_20px_rgba(195,228,29,0.25)]">
+              <svg
+                className="w-4 h-4 text-neutral-400 dark:text-neutral-500 group-hover:text-black transition-colors duration-300"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M7 17L17 7M17 7H7M17 7V17" />
+              </svg>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div className="flex justify-between items-start">
-        <div>
-          <h3 className="text-2xl font-bold font-['Fira_Code'] mb-2 group-hover:text-[#C3E41D] transition-colors duration-300">
-            {project.title}
-          </h3>
-          <p className="text-neutral-500 dark:text-neutral-400 font-['Antic'] text-sm max-w-[280px]">
-            {project.description}
-          </p>
-        </div>
-        
-        <div className="w-12 h-12 rounded-full border border-[#C3E41D]/30 flex items-center justify-center group-hover:bg-[#C3E41D] group-hover:border-[#C3E41D] transition-all duration-500 shadow-[0_0_15px_rgba(195,228,29,0)] group-hover:shadow-[0_0_15px_rgba(195,228,29,0.3)]">
-          <svg 
-            className="w-5 h-5 text-[#C3E41D] group-hover:text-black transition-colors" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth="3" 
-            strokeLinecap="round" 
-            strokeLinejoin="round"
-          >
-            <path d="M7 17L17 7M17 7H7M17 7V17" />
-          </svg>
-        </div>
-      </div>
-    </motion.div>
+    </motion.article>
   );
 };
