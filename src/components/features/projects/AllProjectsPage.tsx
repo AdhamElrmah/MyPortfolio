@@ -135,7 +135,7 @@ export const AllProjectsPage: React.FC = () => {
         transition={{ duration: 0.5, delay: 0.3 }}
       >
         <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
-          <div className="flex items-center gap-1 overflow-x-auto py-4 scrollbar-hide -mx-2 px-2">
+          <div className="flex items-center gap-2 overflow-x-auto py-4 pb-5 thin-scrollbar -mx-2 px-2">
             {allCategories.map((cat) => (
               <button
                 key={cat}
