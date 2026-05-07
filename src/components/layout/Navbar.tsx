@@ -15,7 +15,6 @@ const menuItems = [
   { label: "PROJECTS", href: "#projects", id: "projects" },
   { label: "EXPERIENCE", href: "#experience", id: "experience" },
   { label: "EDUCATION", href: "#education", id: "education" },
-  { label: "WRITING", href: "#writing", id: "writing" },
   { label: "CONTACT", href: "#contact", id: "contact" },
 ];
 

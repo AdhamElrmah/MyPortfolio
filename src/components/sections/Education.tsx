@@ -53,8 +53,7 @@ export const Education: React.FC = () => {
           </div>
 
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter leading-[0.95] font-['Fira_Code']">
-            Academic{" "}
-            <span className="text-[#C3E41D]">Foundation</span>
+            Academic <span className="text-[#C3E41D]">Foundation</span>
           </h2>
         </motion.div>
 
@@ -63,8 +62,12 @@ export const Education: React.FC = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.7, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="relative rounded-2xl border border-[#C3E41D]/20 bg-neutral-50/50 dark:bg-[#0d0d0d] overflow-hidden hover:border-[#C3E41D]/40 transition-all duration-500 hover:shadow-[0_8px_60px_rgba(195,228,29,0.04)]"
+          transition={{
+            duration: 0.7,
+            delay: 0.15,
+            ease: [0.25, 0.46, 0.45, 0.94],
+          }}
+          className="relative rounded-2xl border border-neutral-200 dark:border-[#C3E41D]/20 bg-white dark:bg-[#0d0d0d] overflow-hidden hover:border-[#C3E41D]/50 dark:hover:border-[#C3E41D]/40 transition-all duration-500 shadow-[0_4px_32px_rgba(0,0,0,0.06)] dark:shadow-none hover:shadow-[0_8px_48px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_8px_60px_rgba(195,228,29,0.04)]"
         >
           {/* Top accent line */}
           <div className="absolute top-0 left-8 right-8 h-[1px] bg-gradient-to-r from-transparent via-[#C3E41D]/30 to-transparent" />
@@ -77,7 +80,15 @@ export const Education: React.FC = () => {
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-[#C3E41D]/10 flex items-center justify-center text-[#C3E41D]">
-                      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <svg
+                        className="w-5 h-5"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
                         <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
                         <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5" />
                       </svg>
@@ -102,7 +113,8 @@ export const Education: React.FC = () => {
                 <p className="text-sm md:text-base font-['Antic'] text-neutral-600 dark:text-neutral-300 mb-1">
                   {education.institution}
                   <span className="text-neutral-400 dark:text-neutral-500">
-                    {" "}({education.shortName})
+                    {" "}
+                    ({education.shortName})
                   </span>
                 </p>
 
@@ -111,9 +123,17 @@ export const Education: React.FC = () => {
                   <span className="text-xs font-mono text-neutral-400 dark:text-neutral-500">
                     {education.location}
                   </span>
-                  <span className="text-neutral-300 dark:text-neutral-700">•</span>
+                  <span className="text-neutral-300 dark:text-neutral-700">
+                    •
+                  </span>
                   <div className="flex items-center gap-1.5">
-                    <svg className="w-3.5 h-3.5 text-neutral-400 dark:text-neutral-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <svg
+                      className="w-3.5 h-3.5 text-neutral-400 dark:text-neutral-500"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
                       <circle cx="12" cy="12" r="10" />
                       <polyline points="12 6 12 12 16 14" />
                     </svg>
@@ -142,7 +162,7 @@ export const Education: React.FC = () => {
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.4, delay: 0.3 + j * 0.1 }}
-                      className="flex items-start gap-3 p-3 rounded-xl bg-neutral-100/50 dark:bg-white/[0.03] border border-neutral-200/50 dark:border-white/[0.04]"
+                      className="flex items-start gap-3 p-3 rounded-xl bg-neutral-100 dark:bg-white/[0.03] border border-neutral-200 dark:border-white/[0.04]"
                     >
                       <span className="mt-0.5 text-[#C3E41D] shrink-0">
                         <CheckIcon />

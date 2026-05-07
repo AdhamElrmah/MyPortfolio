@@ -5,6 +5,7 @@ import { About } from "../sections/About";
 import { Projects } from "../sections/Projects";
 import { Experience } from "../sections/Experience";
 import { Education } from "../sections/Education";
+import { Contact } from "../sections/Contact";
 import { SocialSidebar } from "./SocialSidebar";
 import { useTheme } from "../../hooks/useTheme";
 import { useActiveSection } from "../../hooks/useActiveSection";
@@ -17,7 +18,6 @@ const sectionIds = [
   "projects",
   "experience",
   "education",
-  "writing",
   "contact",
 ];
 
@@ -57,6 +57,7 @@ export const PortfolioLayout: React.FC = () => {
         <Projects />
         <Experience />
         <Education />
+        <Contact />
       </div>
     </div>
   );
