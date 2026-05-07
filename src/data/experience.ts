@@ -4,7 +4,7 @@ export interface Experience {
   company: string;
   companyUrl?: string;
   location: string;
-  type: "Full-time" | "Part-time" | "Freelance" | "Internship" | "Training";
+  type: "Full-time" | "Part-time" | "Freelance" | "Internship" | "Training" | "Scholarship";
   period: string;
   startDate: string; // for sorting
   description: string;
@@ -57,7 +57,7 @@ export const experiences: Experience[] = [
     role: "Software Engineering Student",
     company: "ALX Africa / Holberton School",
     location: "Remote",
-    type: "Full-time",
+    type: "Scholarship",
     period: "2024 — Present",
     startDate: "2024-01",
     description:

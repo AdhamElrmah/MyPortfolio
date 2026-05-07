@@ -40,6 +40,7 @@ const typeColors: Record<ExperienceType["type"], string> = {
   Freelance: "bg-amber-500/15 text-amber-300 border-amber-400/30 dark:bg-amber-500/20 dark:text-amber-300 dark:border-amber-400/40",
   Internship: "bg-purple-500/15 text-purple-300 border-purple-400/30 dark:bg-purple-500/20 dark:text-purple-300 dark:border-purple-400/40",
   Training: "bg-cyan-500/15 text-cyan-300 border-cyan-400/30 dark:bg-cyan-500/20 dark:text-cyan-300 dark:border-cyan-400/40",
+  Scholarship: "bg-rose-500/15 text-rose-300 border-rose-400/30 dark:bg-rose-500/20 dark:text-rose-300 dark:border-rose-400/40",
 };
 
 /* ─── Experience Card ──────────────────────────────── */

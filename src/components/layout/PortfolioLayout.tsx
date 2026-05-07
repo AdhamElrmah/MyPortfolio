@@ -4,6 +4,7 @@ import { Hero } from "../sections/Hero";
 import { About } from "../sections/About";
 import { Projects } from "../sections/Projects";
 import { Experience } from "../sections/Experience";
+import { Education } from "../sections/Education";
 import { useTheme } from "../../hooks/useTheme";
 import { useActiveSection } from "../../hooks/useActiveSection";
 
@@ -53,7 +54,7 @@ export const PortfolioLayout: React.FC = () => {
         <About />
         <Projects />
         <Experience />
-        {/* Other sections will be added here */}
+        <Education />
       </div>
     </div>
   );
