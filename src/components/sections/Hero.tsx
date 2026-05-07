@@ -1,7 +1,16 @@
 import React from "react";
+import { motion } from "framer-motion";
 import { BlurText } from "../common/BlurText";
+import { Typewriter } from "../common/Typewriter";
 import adhamImage from "../../assets/adham.png";
 import { InfiniteGrid } from "../ui/the-infinite-grid";
+
+const taglines = [
+  "Designing human experiences in code.",
+  "Crafting digital excellence.",
+  "Building the web, one pixel at a time.",
+  "Turning ideas into interactive reality.",
+];
 
 export const Hero: React.FC = () => {
   return (
@@ -56,25 +65,27 @@ export const Hero: React.FC = () => {
         {/* Tagline */}
         <div className="absolute bottom-16 sm:bottom-20 md:bottom-24 lg:bottom-32 xl:bottom-36 left-1/2 -translate-x-1/2 w-full px-6 z-10">
           <div className="flex justify-center">
-            <BlurText
-              text="Designing human experiences in code."
-              delay={150}
-              animateBy="words"
-              direction="top"
-              className="text-[15px] sm:text-[18px] md:text-[20px] lg:text-[22px] text-center transition-colors duration-300 text-neutral-500 hover:text-black dark:hover:text-white"
+            <Typewriter
+              phrases={taglines}
+              typingSpeed={70}
+              deletingSpeed={35}
+              pauseDuration={2500}
+              className="text-[15px] sm:text-[18px] md:text-[20px] lg:text-[22px] text-center transition-colors duration-300 text-neutral-500"
               style={{ fontFamily: "'Antic', sans-serif" }}
             />
           </div>
         </div>
 
         {/* Scroll Indicator */}
-        <a
+        <motion.a
           href="#about"
           className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 transition-colors duration-300 z-10"
           aria-label="Scroll down"
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         >
           <svg
-            className="w-5 h-5 md:w-8 md:h-8 text-neutral-500 hover:text-black dark:hover:text-white transition-colors duration-300"
+            className="w-5 h-5 md:w-8 md:h-8 text-neutral-500 hover:text-[#C3E41D] transition-colors duration-300"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -84,7 +95,7 @@ export const Hero: React.FC = () => {
           >
             <path d="m6 9 6 6 6-6" />
           </svg>
-        </a>
+        </motion.a>
       </InfiniteGrid>
     </main>
   );

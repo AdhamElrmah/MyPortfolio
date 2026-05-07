@@ -6,7 +6,9 @@ import { Projects } from "../sections/Projects";
 import { Experience } from "../sections/Experience";
 import { Education } from "../sections/Education";
 import { Contact } from "../sections/Contact";
+import { TechStack } from "../sections/TechStack";
 import { SocialSidebar } from "./SocialSidebar";
+import { BackToTop } from "../common/BackToTop";
 import { useTheme } from "../../hooks/useTheme";
 import { useActiveSection } from "../../hooks/useActiveSection";
 
@@ -15,6 +17,7 @@ import { useLocation } from "react-router-dom";
 const sectionIds = [
   "home",
   "about",
+  "skills",
   "projects",
   "experience",
   "education",
@@ -54,11 +57,13 @@ export const PortfolioLayout: React.FC = () => {
       <div className="w-full">
         <Hero />
         <About />
+        <TechStack />
         <Projects />
         <Experience />
         <Education />
         <Contact />
       </div>
+      <BackToTop />
     </div>
   );
 };

@@ -12,6 +12,7 @@ interface NavbarProps {
 const menuItems = [
   { label: "HOME", href: "#home", id: "home" },
   { label: "ABOUT", href: "#about", id: "about" },
+  { label: "SKILLS", href: "#skills", id: "skills" },
   { label: "PROJECTS", href: "#projects", id: "projects" },
   { label: "EXPERIENCE", href: "#experience", id: "experience" },
   { label: "EDUCATION", href: "#education", id: "education" },

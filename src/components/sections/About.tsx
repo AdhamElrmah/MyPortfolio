@@ -1,6 +1,24 @@
 import React from "react";
 import { motion } from "framer-motion";
 import aboutImage from "../../assets/about.png";
+import { useCountUp } from "../../hooks/useCountUp";
+
+const AnimatedStat: React.FC<{ end: number; suffix: string; label: string }> = ({ end, suffix, label }) => {
+  const [ref, count] = useCountUp(end, 2000);
+  return (
+    <div className="group">
+      <h4
+        ref={ref as React.RefObject<HTMLHeadingElement>}
+        className="text-[#C3E41D] text-2xl lg:text-xl xl:text-3xl font-bold mb-1 group-hover:translate-x-1 transition-transform"
+      >
+        {count}{suffix}
+      </h4>
+      <p className="text-xs lg:text-[10px] xl:text-sm uppercase tracking-wider opacity-60">
+        {label}
+      </p>
+    </div>
+  );
+};
 
 export const About: React.FC = () => {
   return (
@@ -100,30 +118,9 @@ export const About: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-3 sm:justify-center lg:flex lg:justify-start gap-8 sm:gap-12 mt-8 lg:mt-6">
-            <div className="group">
-              <h4 className="text-[#C3E41D] text-2xl lg:text-xl xl:text-3xl font-bold mb-1 group-hover:translate-x-1 transition-transform">
-                02+
-              </h4>
-              <p className="text-xs lg:text-[10px] xl:text-sm uppercase tracking-wider opacity-60">
-                Years Exp.
-              </p>
-            </div>
-            <div className="group">
-              <h4 className="text-[#C3E41D] text-2xl lg:text-xl xl:text-3xl font-bold mb-1 group-hover:translate-x-1 transition-transform">
-                15+
-              </h4>
-              <p className="text-xs lg:text-[10px] xl:text-sm uppercase tracking-wider opacity-60">
-                Projects
-              </p>
-            </div>
-            <div className="group">
-              <h4 className="text-[#C3E41D] text-2xl lg:text-xl xl:text-3xl font-bold mb-1 group-hover:translate-x-1 transition-transform">
-                10+
-              </h4>
-              <p className="text-xs lg:text-[10px] xl:text-sm uppercase tracking-wider opacity-60">
-                Tech Stack
-              </p>
-            </div>
+            <AnimatedStat end={2} suffix="+" label="Years Exp." />
+            <AnimatedStat end={15} suffix="+" label="Projects" />
+            <AnimatedStat end={10} suffix="+" label="Tech Stack" />
           </div>
 
           <motion.div className="mt-8 lg:mt-6 flex justify-center lg:justify-start">

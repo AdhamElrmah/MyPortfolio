@@ -3,6 +3,25 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ProjectCard } from "../features/projects/ProjectCard";
 import { projects } from "../../data/projects";
+import { useCountUp } from "../../hooks/useCountUp";
+
+const AnimatedProjectStat: React.FC<{ end: number; suffix: string; label: string }> = ({ end, suffix, label }) => {
+  const [ref, count] = useCountUp(end, 2000);
+  return (
+    <div className="text-center group">
+      <h4
+        ref={ref as React.RefObject<HTMLHeadingElement>}
+        className="text-2xl md:text-3xl font-bold text-[#C3E41D] mb-1 group-hover:scale-110 transition-transform duration-300 inline-block"
+        style={{ fontFamily: "'Fira Code', monospace" }}
+      >
+        {count}{suffix}
+      </h4>
+      <p className="text-[10px] md:text-xs font-mono uppercase tracking-[0.15em] text-neutral-400 dark:text-neutral-500">
+        {label}
+      </p>
+    </div>
+  );
+};
 
 export const Projects: React.FC = () => {
   const featured = projects[0];
@@ -93,22 +112,12 @@ export const Projects: React.FC = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           {[
-            { value: "15+", label: "Projects Built" },
-            { value: "10+", label: "Tech Stack" },
-            { value: "99%", label: "Uptime Record" },
-            { value: "4.8", label: "Avg. Satisfaction" },
+            { value: 15, suffix: "+", label: "Projects Built" },
+            { value: 10, suffix: "+", label: "Tech Stack" },
+            { value: 99, suffix: "%", label: "Uptime Record" },
+            { value: 4.8, suffix: "", label: "Avg. Satisfaction" },
           ].map((stat, i) => (
-            <div key={i} className="text-center group">
-              <h4
-                className="text-2xl md:text-3xl font-bold text-[#C3E41D] mb-1 group-hover:scale-110 transition-transform duration-300 inline-block"
-                style={{ fontFamily: "'Fira Code', monospace" }}
-              >
-                {stat.value}
-              </h4>
-              <p className="text-[10px] md:text-xs font-mono uppercase tracking-[0.15em] text-neutral-400 dark:text-neutral-500">
-                {stat.label}
-              </p>
-            </div>
+            <AnimatedProjectStat key={i} end={stat.value} suffix={stat.suffix} label={stat.label} />
           ))}
         </motion.div>
 
