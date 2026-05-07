@@ -7,8 +7,6 @@ import { Experience } from "../sections/Experience";
 import { Education } from "../sections/Education";
 import { Contact } from "../sections/Contact";
 import { TechStack } from "../sections/TechStack";
-import { SocialSidebar } from "./SocialSidebar";
-import { BackToTop } from "../common/BackToTop";
 import { useTheme } from "../../hooks/useTheme";
 import { useActiveSection } from "../../hooks/useActiveSection";
 
@@ -31,12 +29,19 @@ export const PortfolioLayout: React.FC = () => {
 
   useEffect(() => {
     if (location.state && location.state.scrollTo) {
-      const element = document.getElementById(location.state.scrollTo);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
-      // Clear state to prevent scrolling again on refresh
+      const targetId = location.state.scrollTo;
+      // Clear state immediately
       window.history.replaceState({}, document.title);
+      // First jump to top instantly so user doesn't see an intermediate position
+      window.scrollTo(0, 0);
+      // Then scroll to the target section after DOM is ready
+      const timer = setTimeout(() => {
+        const element = document.getElementById(targetId);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 300);
+      return () => clearTimeout(timer);
     }
   }, [location]);
 
@@ -48,7 +53,6 @@ export const PortfolioLayout: React.FC = () => {
         color: isDark ? "hsl(0 0% 100%)" : "hsl(0 0% 10%)",
       }}
     >
-      <SocialSidebar />
       <Navbar
         isDark={isDark}
         toggleTheme={toggleTheme}
@@ -63,7 +67,6 @@ export const PortfolioLayout: React.FC = () => {
         <Education />
         <Contact />
       </div>
-      <BackToTop />
     </div>
   );
 };

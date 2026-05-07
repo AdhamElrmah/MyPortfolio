@@ -42,8 +42,9 @@ export const AllProjectsPage: React.FC = () => {
           ALL
         </div>
 
-        {/* Ambient glow */}
+        {/* Ambient glows */}
         <div className="absolute top-1/2 left-1/4 w-[500px] h-[500px] bg-[#C3E41D]/[0.02] rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute top-1/3 right-1/4 w-[300px] h-[300px] bg-[#C3E41D]/[0.015] rounded-full blur-[100px] pointer-events-none" />
 
         <div className="max-w-7xl mx-auto relative z-10">
           {/* Back navigation */}
@@ -57,7 +58,7 @@ export const AllProjectsPage: React.FC = () => {
               to="/"
               className="inline-flex items-center gap-3 text-neutral-400 hover:text-[#C3E41D] transition-colors duration-300 group"
             >
-              <div className="w-8 h-8 rounded-full border border-neutral-300 dark:border-white/[0.08] flex items-center justify-center group-hover:border-[#C3E41D]/50 transition-colors">
+              <div className="w-8 h-8 rounded-full border border-neutral-300 dark:border-white/[0.08] flex items-center justify-center group-hover:border-[#C3E41D]/50 group-hover:bg-[#C3E41D]/10 transition-all duration-300">
                 <svg
                   className="w-3.5 h-3.5"
                   viewBox="0 0 24 24"
@@ -96,14 +97,33 @@ export const AllProjectsPage: React.FC = () => {
             </div>
 
             <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.9] font-['Fira_Code'] mb-8">
-              All{" "}
+              {"All ".split("").map((char, i) => (
+                <motion.span
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 + i * 0.04 }}
+                >
+                  {char}
+                </motion.span>
+              ))}
               <span className="text-[#C3E41D] relative">
-                Projects
+                {"Projects".split("").map((char, i) => (
+                  <motion.span
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.5 + i * 0.04 }}
+                    className="inline-block"
+                  >
+                    {char}
+                  </motion.span>
+                ))}
                 <motion.div
                   className="absolute -bottom-2 left-0 w-full h-[2px] bg-[#C3E41D]/30"
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}
-                  transition={{ duration: 0.8, delay: 0.5 }}
+                  transition={{ duration: 0.8, delay: 1 }}
                   style={{ transformOrigin: "left" }}
                 />
               </span>
@@ -129,24 +149,43 @@ export const AllProjectsPage: React.FC = () => {
 
       {/* ── Filter tabs ────────────────────────── */}
       <motion.div
-        className="sticky top-0 z-30 border-b border-neutral-200 dark:border-white/[0.06] backdrop-blur-xl bg-white/80 dark:bg-[#050505]/80"
+        className="sticky top-0 z-30 border-b border-neutral-200 dark:border-white/[0.06] backdrop-blur-xl"
+        style={{
+          backgroundColor: isDark
+            ? "rgba(5, 5, 5, 0.85)"
+            : "rgba(249, 249, 249, 0.85)",
+        }}
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.3 }}
       >
         <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
-          <div className="flex items-center gap-2 overflow-x-auto py-4 pb-5 thin-scrollbar -mx-2 px-2">
+          <div className="flex items-center gap-1.5 overflow-x-auto py-4 pb-5 thin-scrollbar -mx-2 px-2">
             {allCategories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveFilter(cat)}
-                className={`relative shrink-0 px-4 py-2 rounded-full text-[10px] font-mono tracking-[0.15em] uppercase transition-all duration-300 cursor-pointer ${
+                className={`relative shrink-0 px-5 py-2 rounded-full text-[10px] font-mono tracking-[0.15em] uppercase transition-all duration-300 cursor-pointer ${
                   activeFilter === cat
-                    ? "text-black dark:text-black bg-[#C3E41D]"
-                    : "text-neutral-400 dark:text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-white/[0.05]"
+                    ? "text-black dark:text-black"
+                    : "text-neutral-400 dark:text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300"
                 }`}
               >
-                {cat === "All" ? "All Projects" : cat}
+                {activeFilter === cat && (
+                  <motion.div
+                    layoutId="activeProjectFilter"
+                    className="absolute inset-0 rounded-full bg-[#C3E41D] shadow-[0_0_20px_rgba(195,228,29,0.2)]"
+                    transition={{
+                      type: "spring",
+                      stiffness: 350,
+                      damping: 30,
+                    }}
+                    style={{ zIndex: -1 }}
+                  />
+                )}
+                <span className="relative z-10">
+                  {cat === "All" ? "All Projects" : cat}
+                </span>
               </button>
             ))}
           </div>
@@ -210,17 +249,25 @@ export const AllProjectsPage: React.FC = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
-            {/* Decorative gradient */}
+            {/* Decorative gradient line */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[1px] bg-gradient-to-r from-transparent via-[#C3E41D]/40 to-transparent" />
 
-            <h3 className="text-2xl md:text-3xl font-bold mb-4 font-['Fira_Code'] tracking-tight">
+            {/* Floating orbs */}
+            <div className="absolute top-8 left-8 w-24 h-24 bg-[#C3E41D]/[0.04] rounded-full blur-[40px] pointer-events-none" />
+            <div className="absolute bottom-8 right-8 w-32 h-32 bg-[#C3E41D]/[0.03] rounded-full blur-[50px] pointer-events-none" />
+
+            {/* Geometric accent */}
+            <div className="absolute top-6 right-6 w-8 h-8 border border-[#C3E41D]/10 rounded-lg rotate-12 pointer-events-none" />
+            <div className="absolute bottom-6 left-6 w-6 h-6 border border-[#C3E41D]/10 rounded-full pointer-events-none" />
+
+            <h3 className="text-2xl md:text-3xl font-bold mb-4 font-['Fira_Code'] tracking-tight relative z-10">
               Have a project in <span className="text-[#C3E41D]">mind</span>?
             </h3>
-            <p className="text-neutral-500 dark:text-neutral-400/80 font-['Antic'] text-sm md:text-base mb-8 max-w-md mx-auto">
+            <p className="text-neutral-500 dark:text-neutral-400/80 font-['Antic'] text-sm md:text-base mb-8 max-w-md mx-auto relative z-10">
               I'm always open to new opportunities and exciting collaborations.
               Let's build something great together.
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 relative z-10">
               <Link
                 to="/"
                 state={{ scrollTo: "contact" }}

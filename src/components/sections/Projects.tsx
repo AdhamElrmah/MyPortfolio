@@ -40,8 +40,9 @@ export const Projects: React.FC = () => {
         WORKS
       </div>
 
-      {/* Ambient glow */}
+      {/* Ambient glows */}
       <div className="absolute bottom-1/4 right-0 w-[500px] h-[500px] bg-[#C3E41D]/[0.015] rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/3 left-0 w-[300px] h-[300px] bg-[#C3E41D]/[0.01] rounded-full blur-[100px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* ── Section header ─────────────────── */}
@@ -105,7 +106,7 @@ export const Projects: React.FC = () => {
 
         {/* ── Stats bar ──────────────────────── */}
         <motion.div
-          className="mt-16 md:mt-20 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 py-8 px-6 md:px-10 rounded-2xl border border-neutral-200 dark:border-white/[0.06] bg-neutral-50/50 dark:bg-[#0d0d0d]"
+          className="mt-16 md:mt-20 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 py-8 px-6 md:px-10 rounded-2xl border border-neutral-200 dark:border-white/[0.06] bg-neutral-50/50 dark:bg-white/[0.02] backdrop-blur-sm"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -134,7 +135,7 @@ export const Projects: React.FC = () => {
           </p>
           <Link
             to="/projects"
-            className="inline-flex items-center gap-4 py-4 px-12 rounded-full border border-[#C3E41D] text-[#C3E41D] font-bold tracking-[0.2em] uppercase text-xs hover:bg-[#C3E41D] hover:text-black transition-all duration-300 shadow-[0_0_20px_rgba(195,228,29,0.1)] group"
+            className="inline-flex items-center gap-4 py-4 px-12 rounded-full border border-[#C3E41D] text-[#C3E41D] font-bold tracking-[0.2em] uppercase text-xs hover:bg-[#C3E41D] hover:text-black transition-all duration-300 hover:shadow-[0_0_40px_rgba(195,228,29,0.2)] group"
           >
             Explore Full Archive
             <svg

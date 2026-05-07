@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { projects } from "../../../data/projects";
 import { useTheme } from "../../../hooks/useTheme";
 import { Navbar } from "../../layout/Navbar";
@@ -39,6 +39,22 @@ export const ProjectDetailsPage: React.FC = () => {
 
   if (!project) return null;
 
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [activeGallery, setActiveGallery] = useState(0);
+
+  // Keyboard navigation for lightbox
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (lightboxIndex === null || !project.gallery) return;
+    if (e.key === "Escape") setLightboxIndex(null);
+    if (e.key === "ArrowRight" && lightboxIndex < project.gallery.length - 1) setLightboxIndex(lightboxIndex + 1);
+    if (e.key === "ArrowLeft" && lightboxIndex > 0) setLightboxIndex(lightboxIndex - 1);
+  }, [lightboxIndex, project.gallery]);
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleKeyDown]);
+
   return (
     <div
       className="min-h-screen transition-colors duration-500 overflow-x-hidden"
@@ -59,6 +75,10 @@ export const ProjectDetailsPage: React.FC = () => {
           {String(project.id).padStart(2, "0")}
         </div>
 
+        {/* Ambient glows */}
+        <div className="absolute top-1/3 right-0 w-[500px] h-[500px] bg-[#C3E41D]/[0.02] rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-0 left-1/4 w-[300px] h-[300px] bg-[#C3E41D]/[0.015] rounded-full blur-[100px] pointer-events-none" />
+
         <div className="max-w-6xl mx-auto relative z-10">
           {/* Navigation row */}
           <motion.div
@@ -71,7 +91,7 @@ export const ProjectDetailsPage: React.FC = () => {
               onClick={() => navigate(-1)}
               className="inline-flex items-center gap-3 text-neutral-400 hover:text-[#C3E41D] transition-colors duration-300 group cursor-pointer"
             >
-              <div className="w-8 h-8 rounded-full border border-neutral-300 dark:border-white/[0.08] flex items-center justify-center group-hover:border-[#C3E41D]/50 transition-colors">
+              <div className="w-8 h-8 rounded-full border border-neutral-300 dark:border-white/[0.08] flex items-center justify-center group-hover:border-[#C3E41D]/50 group-hover:bg-[#C3E41D]/10 transition-all duration-300">
                 <svg
                   className="w-3.5 h-3.5"
                   viewBox="0 0 24 24"
@@ -125,25 +145,186 @@ export const ProjectDetailsPage: React.FC = () => {
         </div>
       </header>
 
-      {/* ── Hero Image ─────────────────────────── */}
-      <motion.div
-        className="px-6 md:px-12 lg:px-24 mb-16 md:mb-24"
-        initial={{ opacity: 0, y: 40, scale: 0.97 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.9, delay: 0.3 }}
-      >
-        <div className="max-w-6xl mx-auto">
-          <div className="relative rounded-2xl overflow-hidden border border-neutral-200 dark:border-white/[0.06] group">
-            <img
-              src={project.image}
-              alt={project.title}
-              className="w-full h-auto max-h-[75vh] object-cover"
-            />
-            {/* Gradient overlay at bottom */}
-            <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
+      {/* ── Project Showcase ─────────────────────── */}
+      {project.gallery && project.gallery.length > 0 ? (
+        <div className="px-6 md:px-12 lg:px-24 mb-16 md:mb-24">
+          <div className="max-w-6xl mx-auto">
+            <FadeUp>
+              {/* Section label */}
+              <div className="flex items-center gap-4 mb-8">
+                <div className="h-[2px] w-8 bg-[#C3E41D]" />
+                <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-[#C3E41D] font-mono">
+                  Project Showcase
+                </span>
+                <div className="h-[1px] flex-1 bg-neutral-200 dark:bg-white/[0.06]" />
+                <span className="text-[10px] font-mono text-neutral-400 dark:text-neutral-500 tracking-wider">
+                  {String(activeGallery + 1).padStart(2, "0")} / {String(project.gallery.length).padStart(2, "0")}
+                </span>
+              </div>
+
+              {/* Main showcase container */}
+              <div className="rounded-2xl border border-neutral-200 dark:border-white/[0.06] bg-neutral-50/50 dark:bg-white/[0.02] backdrop-blur-sm overflow-hidden">
+                {/* Large featured image */}
+                <div
+                  className="relative aspect-[16/9] overflow-hidden cursor-pointer group"
+                  onClick={() => setLightboxIndex(activeGallery)}
+                >
+                  <AnimatePresence mode="wait">
+                    <motion.img
+                      key={activeGallery}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.4 }}
+                      src={project.gallery[activeGallery]}
+                      alt={`${project.title} screenshot ${activeGallery + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </AnimatePresence>
+
+                  {/* Hover overlay */}
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-full bg-white/0 group-hover:bg-white/20 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 scale-75 group-hover:scale-100">
+                      <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                      </svg>
+                    </div>
+                  </div>
+
+                  {/* Navigation arrows on the image */}
+                  {activeGallery > 0 && (
+                    <button
+                      className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-black/30 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-black/50 transition-all cursor-pointer opacity-0 group-hover:opacity-100"
+                      onClick={(e) => { e.stopPropagation(); setActiveGallery(activeGallery - 1); }}
+                    >
+                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                      </svg>
+                    </button>
+                  )}
+                  {activeGallery < project.gallery.length - 1 && (
+                    <button
+                      className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-black/30 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-black/50 transition-all cursor-pointer opacity-0 group-hover:opacity-100"
+                      onClick={(e) => { e.stopPropagation(); setActiveGallery(activeGallery + 1); }}
+                    >
+                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                  )}
+                </div>
+
+                {/* Thumbnail strip */}
+                <div className="p-3 md:p-4 border-t border-neutral-200 dark:border-white/[0.06]">
+                  <div className="flex gap-2 md:gap-3 overflow-x-auto thin-scrollbar">
+                    {project.gallery.map((img, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setActiveGallery(i)}
+                        className={`relative shrink-0 w-20 h-14 md:w-28 md:h-20 rounded-lg overflow-hidden transition-all duration-300 cursor-pointer ${
+                          i === activeGallery
+                            ? "ring-2 ring-[#C3E41D] ring-offset-2 ring-offset-neutral-50 dark:ring-offset-[#0a0a0a] opacity-100"
+                            : "opacity-40 hover:opacity-70 border border-neutral-200 dark:border-white/[0.08]"
+                        }`}
+                      >
+                        <img
+                          src={img}
+                          alt={`Thumbnail ${i + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </FadeUp>
           </div>
         </div>
-      </motion.div>
+      ) : (
+        /* Fallback: simple hero image if no gallery */
+        <motion.div
+          className="px-6 md:px-12 lg:px-24 mb-16 md:mb-24"
+          initial={{ opacity: 0, y: 40, scale: 0.97 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.9, delay: 0.3 }}
+        >
+          <div className="max-w-6xl mx-auto">
+            <div className="relative rounded-2xl overflow-hidden border border-neutral-200 dark:border-white/[0.06]">
+              <img
+                src={project.image}
+                alt={project.title}
+                className="w-full h-auto max-h-[75vh] object-cover"
+              />
+              <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
+            </div>
+          </div>
+        </motion.div>
+      )}
+
+      {/* ── Lightbox ──────────────────────────── */}
+      <AnimatePresence>
+        {lightboxIndex !== null && project.gallery && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4 md:p-8"
+            onClick={() => setLightboxIndex(null)}
+          >
+            {/* Close button */}
+            <button
+              className="absolute top-6 right-6 z-50 w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/40 transition-all cursor-pointer"
+              onClick={() => setLightboxIndex(null)}
+            >
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Counter */}
+            <div className="absolute top-6 left-6 z-50">
+              <span className="text-xs font-mono text-white/50 tracking-wider">
+                {String(lightboxIndex + 1).padStart(2, "0")} / {String(project.gallery.length).padStart(2, "0")}
+              </span>
+            </div>
+
+            {/* Navigation arrows */}
+            {lightboxIndex > 0 && (
+              <button
+                className="absolute left-4 md:left-8 z-50 w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/40 transition-all cursor-pointer"
+                onClick={(e) => { e.stopPropagation(); setLightboxIndex(lightboxIndex - 1); }}
+              >
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+              </button>
+            )}
+            {lightboxIndex < project.gallery.length - 1 && (
+              <button
+                className="absolute right-4 md:right-8 z-50 w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/40 transition-all cursor-pointer"
+                onClick={(e) => { e.stopPropagation(); setLightboxIndex(lightboxIndex + 1); }}
+              >
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </button>
+            )}
+
+            {/* Image */}
+            <motion.img
+              key={lightboxIndex}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.3 }}
+              src={project.gallery[lightboxIndex]}
+              alt={`${project.title} screenshot ${lightboxIndex + 1}`}
+              className="max-w-full max-h-[85vh] object-contain rounded-xl"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ── Info Grid ──────────────────────────── */}
       <div className="px-6 md:px-12 lg:px-24 mb-16 md:mb-24">
@@ -217,7 +398,7 @@ export const ProjectDetailsPage: React.FC = () => {
               ].map((item, i) => (
                 <div
                   key={i}
-                  className="p-5 md:p-6 rounded-2xl border border-neutral-200 dark:border-white/[0.06] bg-neutral-50/50 dark:bg-[#0d0d0d] group hover:border-[#C3E41D]/20 transition-colors duration-300"
+                  className="p-5 md:p-6 rounded-2xl border border-neutral-200 dark:border-white/[0.06] bg-neutral-50/50 dark:bg-white/[0.02] backdrop-blur-sm group hover:border-[#C3E41D]/20 transition-all duration-300"
                 >
                   <div className="flex items-center gap-2 mb-3">
                     <span className="text-[#C3E41D]">{item.icon}</span>
@@ -239,7 +420,7 @@ export const ProjectDetailsPage: React.FC = () => {
       <div className="px-6 md:px-12 lg:px-24 mb-16 md:mb-24">
         <div className="max-w-6xl mx-auto">
           <FadeUp>
-            <div className="p-6 md:p-8 rounded-2xl border border-neutral-200 dark:border-white/[0.06] bg-neutral-50/50 dark:bg-[#0d0d0d]">
+            <div className="p-6 md:p-8 rounded-2xl border border-neutral-200 dark:border-white/[0.06] bg-neutral-50/50 dark:bg-white/[0.02] backdrop-blur-sm">
               <span className="text-[9px] font-mono tracking-[0.2em] uppercase text-neutral-400 dark:text-neutral-500 block mb-4">
                 Tech Stack
               </span>
@@ -358,7 +539,7 @@ export const ProjectDetailsPage: React.FC = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: i * 0.1 }}
-                        className="p-6 rounded-2xl border border-neutral-200 dark:border-white/[0.06] bg-neutral-50/50 dark:bg-[#0d0d0d] hover:border-[#C3E41D]/20 transition-colors duration-300"
+                        className="p-6 rounded-2xl border border-neutral-200 dark:border-white/[0.06] bg-neutral-50/50 dark:bg-white/[0.02] backdrop-blur-sm hover:border-[#C3E41D]/20 transition-all duration-300"
                       >
                         <div className="flex items-center gap-2 mb-3">
                           <div className="w-1.5 h-1.5 rounded-full bg-[#C3E41D]" />
@@ -407,7 +588,7 @@ export const ProjectDetailsPage: React.FC = () => {
               <FadeUp key={p.id} delay={i * 0.1}>
                 <Link
                   to={`/project/${p.id}`}
-                  className="group block rounded-2xl overflow-hidden border border-neutral-200 dark:border-white/[0.06] bg-neutral-50/50 dark:bg-[#0d0d0d] hover:border-[#C3E41D]/30 transition-all duration-500"
+                  className="group block rounded-2xl overflow-hidden border border-neutral-200 dark:border-white/[0.06] bg-neutral-50/50 dark:bg-white/[0.02] backdrop-blur-sm hover:border-[#C3E41D]/30 hover:shadow-[0_0_40px_rgba(195,228,29,0.06)] transition-all duration-500"
                 >
                   {/* Image */}
                   <div className="relative aspect-[16/10] overflow-hidden">
@@ -446,7 +627,7 @@ export const ProjectDetailsPage: React.FC = () => {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <button
                 onClick={() => navigate("/projects")}
-                className="inline-flex items-center gap-3 px-8 py-3.5 rounded-full border border-[#C3E41D] text-[#C3E41D] font-bold text-xs tracking-[0.15em] uppercase hover:bg-[#C3E41D] hover:text-black transition-all duration-300 shadow-[0_0_20px_rgba(195,228,29,0.08)] cursor-pointer"
+                className="inline-flex items-center gap-3 px-8 py-3.5 rounded-full border border-[#C3E41D] text-[#C3E41D] font-bold text-xs tracking-[0.15em] uppercase hover:bg-[#C3E41D] hover:text-black transition-all duration-300 hover:shadow-[0_0_40px_rgba(195,228,29,0.2)] cursor-pointer"
               >
                 View All Projects
                 <svg

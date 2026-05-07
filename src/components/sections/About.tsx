@@ -34,6 +34,10 @@ export const About: React.FC = () => {
         ABOUT
       </div>
 
+      {/* Ambient glows */}
+      <div className="absolute top-1/4 right-0 w-[400px] h-[400px] bg-[#C3E41D]/[0.015] rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-1/3 left-0 w-[300px] h-[300px] bg-[#C3E41D]/[0.01] rounded-full blur-[100px] pointer-events-none" />
+
       <div className="max-w-full md:max-w-[500px] lg:max-w-7xl mx-auto flex flex-col lg:grid lg:grid-cols-2 lg:grid-rows-[auto_auto] items-center lg:items-start text-center lg:text-left gap-x-8 xl:gap-x-16 gap-y-12 lg:gap-y-2 relative z-10">
         {/* 1. Image Block - Top on mobile, Right on desktop */}
         <motion.div
@@ -43,23 +47,23 @@ export const About: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 1, ease: "easeOut" }}
         >
-          <div className="relative z-10 p-4 border border-neutral-200 dark:border-neutral-800 max-w-[280px] sm:max-w-sm lg:max-w-none mx-auto">
-            <div className="aspect-[4/5] overflow-hidden bg-neutral-100 dark:bg-neutral-900">
+          <div className="relative z-10 p-3 border border-neutral-200 dark:border-neutral-800 rounded-2xl max-w-[280px] sm:max-w-sm lg:max-w-none mx-auto bg-neutral-50/50 dark:bg-white/[0.02] backdrop-blur-sm">
+            <div className="aspect-[4/5] overflow-hidden bg-neutral-100 dark:bg-neutral-900 rounded-xl">
               <img
                 src={aboutImage}
                 alt="Adham"
-                className="w-full h-full object-cover grayscale"
+                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
               />
             </div>
           </div>
 
           {/* Accent Box */}
-          <div className="absolute -top-4 -right-4 md:-top-8 md:-right-8 w-32 h-32 md:w-48 md:h-48 border-2 border-[#C3E41D] opacity-20 z-0"></div>
-          <div className="absolute -bottom-4 -left-4 md:-bottom-8 md:-left-8 w-32 h-32 md:w-48 md:h-48 bg-[#C3E41D] opacity-5 z-0"></div>
+          <div className="absolute -top-4 -right-4 md:-top-8 md:-right-8 w-32 h-32 md:w-48 md:h-48 border-2 border-[#C3E41D] opacity-10 rounded-2xl z-0"></div>
+          <div className="absolute -bottom-4 -left-4 md:-bottom-8 md:-left-8 w-32 h-32 md:w-48 md:h-48 bg-[#C3E41D] opacity-[0.03] rounded-2xl z-0"></div>
 
           {/* Floating Text Component */}
           <motion.div
-            className="absolute -bottom-4 -right-4 bg-black dark:bg-white text-white dark:text-black p-4 md:p-6 z-20 hidden sm:block"
+            className="absolute -bottom-4 -right-4 bg-black dark:bg-white text-white dark:text-black p-4 md:p-5 z-20 hidden sm:block rounded-xl shadow-lg"
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
           >
@@ -126,7 +130,7 @@ export const About: React.FC = () => {
           <motion.div className="mt-8 lg:mt-6 flex justify-center lg:justify-start">
             <button
               onClick={() => document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' })}
-              className="px-10 py-4 rounded-full border border-[#C3E41D] cursor-pointer text-[#C3E41D] font-bold text-xs tracking-[0.2em] uppercase hover:bg-[#C3E41D] hover:text-black transition-all shadow-[0_0_20px_rgba(195,228,29,0.1)]"
+              className="px-10 py-4 rounded-full border border-[#C3E41D] cursor-pointer text-[#C3E41D] font-bold text-xs tracking-[0.2em] uppercase hover:bg-[#C3E41D] hover:text-black transition-all duration-300 hover:shadow-[0_0_40px_rgba(195,228,29,0.2)]"
             >
               Discover My Journey
             </button>

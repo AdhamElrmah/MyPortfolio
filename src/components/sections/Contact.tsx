@@ -226,7 +226,7 @@ export const Contact: React.FC = () => {
             {/* Email compact card */}
             <div
               onClick={copyEmail}
-              className="sm:col-span-3 lg:col-span-1 group p-5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111] cursor-pointer transition-all duration-500 hover:border-[#C3E41D]/30 hover:shadow-[0_0_30px_rgba(195,228,29,0.06)] overflow-hidden relative"
+              className="sm:col-span-3 lg:col-span-1 group p-5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-white/[0.02] backdrop-blur-sm cursor-pointer transition-all duration-500 hover:border-[#C3E41D]/30 hover:shadow-[0_0_30px_rgba(195,228,29,0.06)] overflow-hidden relative"
             >
               <div className="absolute top-0 right-0 w-16 h-16 pointer-events-none">
                 <div className="absolute top-0 right-0 w-[1px] h-10 bg-gradient-to-b from-[#C3E41D]/30 to-transparent" />
@@ -249,7 +249,7 @@ export const Contact: React.FC = () => {
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 mb-0.5">
-                    <h3 className="text-sm font-bold font-['Fira_Code'] text-neutral-900 dark:text-white truncate">
+                    <h3 className="text-sm md:text-base font-bold font-['Fira_Code'] text-neutral-900 dark:text-white truncate">
                       adhamelrmah<span className="text-[#C3E41D]">@</span>
                       gmail.com
                     </h3>
@@ -258,7 +258,7 @@ export const Contact: React.FC = () => {
                       Available
                     </span>
                   </div>
-                  <p className="text-[11px] text-neutral-400 font-mono">
+                  <p className="text-[11px] md:text-xs text-neutral-400 font-mono">
                     {copied
                       ? "✓ Copied to clipboard!"
                       : "Click to copy • I reply within 24h"}
@@ -302,16 +302,16 @@ export const Contact: React.FC = () => {
                 href={s.href}
                 target="_blank"
                 rel="noreferrer"
-                className="group p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111] transition-all duration-500 hover:border-[#C3E41D]/40 hover:shadow-[0_0_20px_rgba(195,228,29,0.06)] flex items-center gap-3"
+                className="group p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-white/[0.02] backdrop-blur-sm transition-all duration-500 hover:border-[#C3E41D]/40 hover:shadow-[0_0_20px_rgba(195,228,29,0.06)] flex items-center gap-3"
               >
                 <div className="w-9 h-9 rounded-xl bg-[#C3E41D]/10 flex items-center justify-center text-neutral-500 dark:text-neutral-400 group-hover:text-[#C3E41D] transition-colors shrink-0">
                   {s.icon}
                 </div>
                 <div className="min-w-0">
-                  <p className="text-xs font-mono text-neutral-900 dark:text-white font-medium">
+                  <p className="text-xs md:text-sm font-mono text-neutral-900 dark:text-white font-medium">
                     {s.label}
                   </p>
-                  <p className="text-[10px] font-mono text-neutral-400 truncate">
+                  <p className="text-[10px] md:text-[11px] font-mono text-neutral-400 truncate">
                     {s.user}
                   </p>
                 </div>
@@ -330,7 +330,7 @@ export const Contact: React.FC = () => {
             ))}
 
             {/* Location */}
-            <div className="sm:col-span-3 lg:col-span-1 p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111] flex items-center justify-between">
+            <div className="sm:col-span-3 lg:col-span-1 p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-white/[0.02] backdrop-blur-sm flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-[#C3E41D]/10 flex items-center justify-center">
                   <svg
@@ -347,10 +347,10 @@ export const Contact: React.FC = () => {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-xs font-mono text-neutral-900 dark:text-white tracking-wider">
+                  <p className="text-xs md:text-sm font-mono text-neutral-900 dark:text-white tracking-wider">
                     Alexandria, EG
                   </p>
-                  <p className="text-[10px] font-mono text-neutral-400">
+                  <p className="text-[10px] md:text-[11px] font-mono text-neutral-400">
                     UTC+2 • EET
                   </p>
                 </div>
@@ -370,7 +370,7 @@ export const Contact: React.FC = () => {
 
           {/* Right: Form */}
           <motion.div className="lg:col-span-7" variants={fade}>
-            <div className="relative p-6 md:p-9 rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111] h-full flex flex-col overflow-hidden">
+            <div className="relative p-6 md:p-9 rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-white/[0.02] backdrop-blur-sm h-full flex flex-col overflow-hidden">
               <div className="absolute top-0 left-0 w-16 h-16 pointer-events-none">
                 <div className="absolute top-0 left-0 w-[1px] h-10 bg-gradient-to-b from-[#C3E41D]/20 to-transparent" />
                 <div className="absolute top-0 left-0 h-[1px] w-10 bg-gradient-to-r from-[#C3E41D]/20 to-transparent" />

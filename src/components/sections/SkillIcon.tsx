@@ -26,6 +26,7 @@ import {
   SiDrizzle,
   SiPrisma,
   SiPostman,
+  SiMongoose,
 } from "react-icons/si";
 import { FaAws } from "react-icons/fa";
 import { TbApi, TbBrandVscode } from "react-icons/tb";
@@ -60,6 +61,7 @@ const iconMap: Record<string, React.ComponentType<{ size?: number; className?: s
   drizzle: SiDrizzle,
   prisma: SiPrisma,
   postman: SiPostman,
+  mongoose: SiMongoose,
 };
 
 interface SkillIconProps {

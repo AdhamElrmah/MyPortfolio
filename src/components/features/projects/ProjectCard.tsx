@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import type { Project } from "../../../types/project";
@@ -16,6 +16,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 }) => {
   const navigate = useNavigate();
   const isFeatured = variant === "featured";
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <motion.article
@@ -28,12 +29,23 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         delay: index * 0.12,
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       className="group relative cursor-pointer"
     >
       <div
-        className={`relative overflow-hidden rounded-2xl border border-neutral-200 dark:border-white/[0.06] bg-white dark:bg-[#0d0d0d] transition-all duration-500 hover:border-[#C3E41D]/30 hover:shadow-[0_8px_60px_rgba(195,228,29,0.06)] ${
+        className={`relative overflow-hidden rounded-2xl border backdrop-blur-sm transition-all duration-500 ${
           isFeatured ? "lg:flex lg:items-stretch" : ""
         }`}
+        style={{
+          borderColor: isHovered
+            ? "rgba(195, 228, 29, 0.25)"
+            : "var(--card-border)",
+          backgroundColor: "var(--card-bg)",
+          boxShadow: isHovered
+            ? "0 8px 60px rgba(195, 228, 29, 0.06), 0 0 0 1px rgba(195, 228, 29, 0.08)"
+            : "0 1px 3px rgba(0,0,0,0.04)",
+        }}
       >
         {/* ─── Image Area ─────────────────────────── */}
         <div
@@ -50,7 +62,10 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           <img
             src={project.image}
             alt={project.title}
-            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+            className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-[1.05]"
+            style={{
+              filter: isHovered ? "brightness(1.1)" : "brightness(1)",
+            }}
           />
 
           {/* Category badge on image */}
@@ -63,7 +78,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           {/* Project number on image */}
           <div className="absolute bottom-4 right-4 z-20">
             <span
-              className="text-white/20 text-5xl lg:text-6xl font-bold"
+              className="text-white/20 text-5xl lg:text-6xl font-bold transition-all duration-500 group-hover:text-[#C3E41D]/20"
               style={{ fontFamily: "'Fira Code', monospace" }}
             >
               {String(project.id).padStart(2, "0")}
@@ -120,7 +135,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
               {project.tech.slice(0, isFeatured ? 6 : 4).map((t) => (
                 <span
                   key={t}
-                  className="text-[9px] font-mono px-2 py-1 rounded-md bg-neutral-100 dark:bg-white/[0.05] text-neutral-500 dark:text-neutral-400 border border-neutral-200 dark:border-white/[0.06] group-hover:border-[#C3E41D]/20 group-hover:text-neutral-700 dark:group-hover:text-neutral-300 transition-all duration-300"
+                  className="text-[9px] font-mono px-2.5 py-1 rounded-md backdrop-blur-sm bg-neutral-100 dark:bg-white/[0.05] text-neutral-500 dark:text-neutral-400 border border-neutral-200 dark:border-white/[0.06] group-hover:border-[#C3E41D]/20 group-hover:text-neutral-700 dark:group-hover:text-neutral-300 transition-all duration-300"
                 >
                   {t}
                 </span>
@@ -160,6 +175,18 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           </div>
         </div>
       </div>
+
+      {/* CSS variables */}
+      <style>{`
+        :root {
+          --card-bg: rgba(255, 255, 255, 0.8);
+          --card-border: rgba(230, 230, 230, 0.8);
+        }
+        .dark {
+          --card-bg: rgba(13, 13, 13, 0.8);
+          --card-border: rgba(255, 255, 255, 0.06);
+        }
+      `}</style>
     </motion.article>
   );
 };

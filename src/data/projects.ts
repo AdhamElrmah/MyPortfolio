@@ -1,5 +1,13 @@
 import type { Project } from "../types/project";
-import byDriveImg from "../assets/ByDrive.png";
+import byDriveImg from "../assets/bydrive/screencapture-bejewelled-donut-610ab5-netlify-app-2026-05-07-04_12_28.png";
+import byDrive1 from "../assets/bydrive/Screenshot 2026-05-07 041053.png";
+import byDrive2 from "../assets/bydrive/Screenshot 2026-05-07 041204.png";
+import byDrive3 from "../assets/bydrive/Screenshot 2026-05-07 041221.png";
+import byDrive4 from "../assets/bydrive/screencapture-bejewelled-donut-610ab5-netlify-app-cars-2026-05-07-04_14_10.png";
+import byDrive5 from "../assets/bydrive/screencapture-bejewelled-donut-610ab5-netlify-app-Services-2026-05-07-04_14_43.png";
+import byDrive6 from "../assets/bydrive/Screenshot 2026-05-07 041328.png";
+import byDrive7 from "../assets/bydrive/Screenshot 2026-05-07 041358.png";
+import byDrive8 from "../assets/bydrive/screencapture-bejewelled-donut-610ab5-netlify-app-contact-us-2026-05-07-04_14_25.png";
 
 const mainImg =
   "https://framerusercontent.com/images/ZeEqxVUcvsrXbhgcfefmUL1YRUk.jpeg";
@@ -24,8 +32,8 @@ export const projects: Project[] = [
       "Framer Motion",
       "Mongoose",
     ],
-    image: byDriveImg,
-    gallery: [byDriveImg, byDriveImg, byDriveImg, byDriveImg],
+    image: byDrive1,
+    gallery: [byDrive1, byDriveImg, byDrive2, byDrive3, byDrive4, byDrive5, byDrive6, byDrive7, byDrive8],
     github: "https://github.com/AdhamElrmah/DEPI-Final-Project",
     link: "https://bejewelled-donut-610ab5.netlify.app/",
     overview:

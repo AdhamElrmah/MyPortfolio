@@ -29,6 +29,7 @@ export const skillsRow2: Skill[] = [
   { name: "GraphQL", iconName: "graphql", color: "#E10098" },
   { name: "Drizzle ORM", iconName: "drizzle", color: "#C5F74F" },
   { name: "Prisma", iconName: "prisma", color: "inherit" },
+  { name: "Mongoose", iconName: "mongoose", color: "#880000" },
 ];
 
 // Row 3 — Tools & DevOps

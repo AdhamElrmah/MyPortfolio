@@ -6,6 +6,8 @@ import { WIPBanner } from "./components/common/WIPBanner";
 import { CustomCursor } from "./components/common/CustomCursor";
 import { ScrollProgress } from "./components/common/ScrollProgress";
 import { TerminalTerminal } from "./components/common/TerminalTerminal";
+import { BackToTop } from "./components/common/BackToTop";
+import { SocialSidebar } from "./components/layout/SocialSidebar";
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
         <Route path="/projects" element={<AllProjectsPage />} />
         <Route path="/project/:id" element={<ProjectDetailsPage />} />
       </Routes>
+      <SocialSidebar />
+      <BackToTop />
     </Router>
   );
 }

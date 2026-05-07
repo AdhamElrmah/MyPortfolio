@@ -86,7 +86,7 @@ const ExperienceCard: React.FC<{
       >
         <div
           onClick={onToggle}
-          className="relative cursor-pointer rounded-2xl border border-neutral-200 dark:border-white/[0.08] bg-white/80 dark:bg-[#0d0d0d] p-6 md:p-8 hover:border-[#C3E41D]/40 hover:shadow-[0_0_40px_rgba(195,228,29,0.08)] transition-all duration-500 group/card"
+          className="relative cursor-pointer rounded-2xl border border-neutral-200 dark:border-white/[0.08] bg-white/80 dark:bg-white/[0.02] backdrop-blur-sm p-6 md:p-8 hover:border-[#C3E41D]/40 hover:shadow-[0_0_40px_rgba(195,228,29,0.08)] transition-all duration-500 group/card"
         >
           {/* Accent corner */}
           <div className="absolute top-0 right-0 w-20 h-20 overflow-hidden rounded-tr-2xl pointer-events-none">
@@ -214,8 +214,9 @@ export const Experience: React.FC = () => {
         EXP
       </div>
 
-      {/* Ambient glow */}
+      {/* Ambient glows */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#C3E41D]/[0.02] rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-1/4 right-0 w-[300px] h-[300px] bg-[#C3E41D]/[0.01] rounded-full blur-[100px] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto relative z-10">
         {/* Section Header */}
@@ -307,7 +308,7 @@ export const Experience: React.FC = () => {
           </p>
           <a
             href="#contact"
-            className="inline-flex items-center gap-3 px-10 py-4 rounded-full border border-[#C3E41D] text-[#C3E41D] font-bold text-xs tracking-[0.2em] uppercase hover:bg-[#C3E41D] hover:text-black transition-all duration-300 shadow-[0_0_20px_rgba(195,228,29,0.1)] group"
+            className="inline-flex items-center gap-3 px-10 py-4 rounded-full border border-[#C3E41D] text-[#C3E41D] font-bold text-xs tracking-[0.2em] uppercase hover:bg-[#C3E41D] hover:text-black transition-all duration-300 hover:shadow-[0_0_40px_rgba(195,228,29,0.2)] group"
           >
             Let's Connect
             <svg
