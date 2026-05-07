@@ -230,6 +230,7 @@ export const ProjectDetailsPage: React.FC = () => {
                         <img
                           src={img}
                           alt={`Thumbnail ${i + 1}`}
+                          loading="lazy"
                           className="w-full h-full object-cover"
                         />
                       </button>
