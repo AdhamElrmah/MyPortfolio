@@ -5,7 +5,10 @@ import { InfiniteGrid } from "../ui/the-infinite-grid";
 
 export const Hero: React.FC = () => {
   return (
-    <main id="home" className="relative min-h-screen flex flex-col overflow-hidden">
+    <main
+      id="home"
+      className="relative min-h-screen flex flex-col overflow-hidden"
+    >
       <InfiniteGrid className="absolute inset-0 z-0">
         {/* Centered Main Name */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4 z-10">
@@ -70,13 +73,13 @@ export const Hero: React.FC = () => {
           className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 transition-colors duration-300 z-10"
           aria-label="Scroll down"
         >
-          <svg 
+          <svg
             className="w-5 h-5 md:w-8 md:h-8 text-neutral-500 hover:text-black dark:hover:text-white transition-colors duration-300"
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth="2" 
-            strokeLinecap="round" 
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
             strokeLinejoin="round"
           >
             <path d="m6 9 6 6 6-6" />

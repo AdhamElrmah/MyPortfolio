@@ -1,5 +1,5 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface SocialLink {
   label: string;
@@ -50,6 +50,25 @@ const socials: SocialLink[] = [
 ];
 
 export const SocialSidebar: React.FC = () => {
+  /* ── Scroll direction detection ────────── */
+  const [showPill, setShowPill] = useState(true);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const threshold = 10;
+    const onScroll = () => {
+      const currentY = window.scrollY;
+      if (currentY - lastScrollY.current > threshold) {
+        setShowPill(false); // scrolling down
+      } else if (lastScrollY.current - currentY > threshold) {
+        setShowPill(true); // scrolling up
+      }
+      lastScrollY.current = currentY;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <>
       {/* ── Desktop: Fixed left sidebar ────────── */}
@@ -84,31 +103,37 @@ export const SocialSidebar: React.FC = () => {
         />
       </div>
 
-      {/* ── Mobile: Bottom bar ─────────────────── */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 1 }}
-        className="fixed bottom-0 left-0 right-0 z-40 lg:hidden"
-      >
-        <div className="flex items-center justify-center gap-1 py-3 bg-white/80 dark:bg-[#0a0a0a]/90 backdrop-blur-xl border-t border-neutral-200 dark:border-white/[0.06]">
-          {socials.map((social) => (
-            <a
-              key={social.label}
-              href={social.href}
-              target="_blank"
-              rel="noreferrer"
-              aria-label={social.label}
-              className="flex items-center gap-2 px-5 py-2 rounded-full text-neutral-400 dark:text-neutral-500 hover:text-[#C3E41D] hover:bg-[#C3E41D]/5 transition-all duration-300"
-            >
-              {social.icon}
-              <span className="text-[10px] font-mono tracking-wider uppercase">
-                {social.label}
-              </span>
-            </a>
-          ))}
-        </div>
-      </motion.div>
+      {/* ── Mobile: Floating glass pill ──────────── */}
+      <AnimatePresence>
+        {showPill && (
+          <motion.div
+            initial={{ opacity: 0, y: 60, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 60, scale: 0.9 }}
+            transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="fixed bottom-5 left-1/2 -translate-x-1/2 z-40 lg:hidden"
+          >
+            <div className="flex items-center gap-1 px-2 py-2 rounded-full bg-white/10 dark:bg-white/[0.05] backdrop-blur-2xl border border-white/20 dark:border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
+              {socials.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={social.label}
+                  className="group relative w-10 h-10 flex items-center justify-center rounded-full text-neutral-400 dark:text-neutral-400 hover:text-[#C3E41D] hover:bg-[#C3E41D]/10 transition-all duration-300"
+                >
+                  {social.icon}
+                  {/* Tooltip */}
+                  <span className="absolute -top-9 left-1/2 -translate-x-1/2 px-2.5 py-1 rounded-md bg-black/80 dark:bg-white/90 text-white dark:text-black text-[9px] font-mono tracking-wider uppercase opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 transition-all duration-200 pointer-events-none whitespace-nowrap">
+                    {social.label}
+                  </span>
+                </a>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };
