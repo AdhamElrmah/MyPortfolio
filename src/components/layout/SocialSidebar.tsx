@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import cvFile from "../../assets/Adham-Elrmah.pdf";
 
 interface SocialLink {
   label: string;
@@ -94,11 +95,49 @@ export const SocialSidebar: React.FC = () => {
           </motion.a>
         ))}
 
+        {/* Separator */}
+        <motion.div
+          initial={{ scaleY: 0 }}
+          animate={{ scaleY: 1 }}
+          transition={{ duration: 0.4, delay: 1.1 }}
+          className="w-5 h-[1px] bg-neutral-300 dark:bg-neutral-700 my-1 origin-center"
+        />
+
+        {/* Download CV */}
+        <motion.a
+          href={cvFile}
+          download="Adham-Elrmah-CV.pdf"
+          aria-label="Download CV"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 1.2 }}
+          className="group relative p-3 text-neutral-400 dark:text-neutral-500 hover:text-[#C3E41D] transition-colors duration-300"
+        >
+          <svg
+            className="w-[18px] h-[18px]"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+
+          {/* Tooltip */}
+          <span className="absolute left-full ml-3 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-md bg-neutral-900 dark:bg-white text-white dark:text-black text-[10px] font-mono tracking-wider uppercase opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 pointer-events-none whitespace-nowrap">
+            Download CV
+          </span>
+        </motion.a>
+
         {/* Vertical line */}
         <motion.div
           initial={{ scaleY: 0 }}
           animate={{ scaleY: 1 }}
-          transition={{ duration: 0.6, delay: 1.2 }}
+          transition={{ duration: 0.6, delay: 1.3 }}
           className="w-[1px] h-24 bg-neutral-300 dark:bg-neutral-700 mt-2 origin-top"
         />
       </div>
@@ -130,6 +169,35 @@ export const SocialSidebar: React.FC = () => {
                   </span>
                 </a>
               ))}
+
+              {/* Separator */}
+              <div className="w-[1px] h-5 bg-neutral-400/30 dark:bg-white/10 mx-0.5" />
+
+              {/* Download CV */}
+              <a
+                href={cvFile}
+                download="Adham-Elrmah-CV.pdf"
+                aria-label="Download CV"
+                className="group relative w-10 h-10 flex items-center justify-center rounded-full text-neutral-400 dark:text-neutral-400 hover:text-[#C3E41D] hover:bg-[#C3E41D]/10 transition-all duration-300"
+              >
+                <svg
+                  className="w-[18px] h-[18px]"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                {/* Tooltip */}
+                <span className="absolute -top-9 left-1/2 -translate-x-1/2 px-2.5 py-1 rounded-md bg-black/80 dark:bg-white/90 text-white dark:text-black text-[9px] font-mono tracking-wider uppercase opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 transition-all duration-200 pointer-events-none whitespace-nowrap">
+                  Download CV
+                </span>
+              </a>
             </div>
           </motion.div>
         )}
