@@ -5,6 +5,7 @@ import { About } from "../sections/About";
 import { Projects } from "../sections/Projects";
 import { Experience } from "../sections/Experience";
 import { Education } from "../sections/Education";
+import { SocialSidebar } from "./SocialSidebar";
 import { useTheme } from "../../hooks/useTheme";
 import { useActiveSection } from "../../hooks/useActiveSection";
 
@@ -44,6 +45,7 @@ export const PortfolioLayout: React.FC = () => {
         color: isDark ? "hsl(0 0% 100%)" : "hsl(0 0% 10%)",
       }}
     >
+      <SocialSidebar />
       <Navbar
         isDark={isDark}
         toggleTheme={toggleTheme}
