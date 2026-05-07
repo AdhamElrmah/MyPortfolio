@@ -6,11 +6,14 @@ import {
   SiTailwindcss,
   SiFramer,
   SiHtml5,
+  SiCss,
+  SiJavascript,
   SiNodedotjs,
   SiExpress,
   SiMongodb,
   SiPython,
   SiGit,
+  SiGithub,
   SiLinux,
   SiVercel,
   SiFigma,
@@ -19,25 +22,23 @@ import {
   SiPostgresql,
   SiGraphql,
   SiJsonwebtokens,
+  SiShadcnui,
+  SiDrizzle,
+  SiPrisma,
+  SiPostman,
 } from "react-icons/si";
 import { FaAws } from "react-icons/fa";
-import { VscCode } from "react-icons/vsc";
-import {
-  TbApi,
-  TbCode,
-  TbServer,
-  TbTool,
-  TbRocket,
-} from "react-icons/tb";
+import { TbApi, TbBrandVscode } from "react-icons/tb";
 
-const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
-  // Skills
+const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string; style?: React.CSSProperties }>> = {
   react: SiReact,
   typescript: SiTypescript,
   nextjs: SiNextdotjs,
   tailwind: SiTailwindcss,
   framer: SiFramer,
   html5: SiHtml5,
+  css3: SiCss,
+  javascript: SiJavascript,
   nodejs: SiNodedotjs,
   express: SiExpress,
   mongodb: SiMongodb,
@@ -45,20 +46,20 @@ const iconMap: Record<string, React.ComponentType<{ size?: number; className?: s
   jwt: SiJsonwebtokens,
   python: SiPython,
   git: SiGit,
+  github: SiGithub,
   linux: SiLinux,
   vercel: SiVercel,
-  vscode: VscCode,
+  vscode: TbBrandVscode,
   figma: SiFigma,
   docker: SiDocker,
   threejs: SiThreedotjs,
   postgresql: SiPostgresql,
   graphql: SiGraphql,
   aws: FaAws,
-  // Category icons
-  frontend: TbCode,
-  backend: TbServer,
-  tools: TbTool,
-  learning: TbRocket,
+  shadcn: SiShadcnui,
+  drizzle: SiDrizzle,
+  prisma: SiPrisma,
+  postman: SiPostman,
 };
 
 interface SkillIconProps {
@@ -70,6 +71,6 @@ interface SkillIconProps {
 
 export const SkillIcon: React.FC<SkillIconProps> = ({ name, size = 20, className = "", style }) => {
   const Icon = iconMap[name];
-  if (!Icon) return <TbCode size={size} className={className} style={style} />;
+  if (!Icon) return <SiReact size={size} className={className} style={style} />;
   return <Icon size={size} className={className} style={style} />;
 };

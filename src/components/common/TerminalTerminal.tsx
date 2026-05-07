@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { skillCategories } from "../../data/skills";
+import { skillsRow1, skillsRow2, skillsRow3 } from "../../data/skills";
 
 const commands = {
   help: "Available commands:\n- about     : Print my short bio\n- skills    : List my tech stack\n- contact   : Show my contact info\n- clear     : Clear the terminal\n- sudo hire me : ???",
   about: "Adham Elrmah - Software Engineer based in Egypt.\nSpecializing in high-performance web applications with React, TypeScript, and Node.js.",
-  skills: skillCategories.map(c => `${c.title}:\n  ${c.skills.map(s => s.name).join(", ")}`).join("\n\n"),
+  skills: `Frontend & UI:\n  ${skillsRow1.map(s => s.name).join(", ")}\n\nBackend & Databases:\n  ${skillsRow2.map(s => s.name).join(", ")}\n\nTools & DevOps:\n  ${skillsRow3.map(s => s.name).join(", ")}`,
   contact: "Email: adhamelrmah@gmail.com\nGitHub: @AdhamElrmah\nLinkedIn: adham-elrmah",
 };
 
