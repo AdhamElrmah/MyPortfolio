@@ -1,26 +1,12 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { skillCategories } from "../../data/skills";
-
-const levelColors: Record<string, string> = {
-  Expert:
-    "bg-[#C3E41D]/20 text-[#C3E41D] border-[#C3E41D]/30",
-  Advanced:
-    "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
-  Intermediate:
-    "bg-blue-500/15 text-blue-400 border-blue-500/30",
-  Learning:
-    "bg-purple-500/15 text-purple-400 border-purple-500/30",
-};
-
-const levelBars: Record<string, number> = {
-  Expert: 4,
-  Advanced: 3,
-  Intermediate: 2,
-  Learning: 1,
-};
+import { SkillIcon } from "./SkillIcon";
 
 export const TechStack: React.FC = () => {
+  const [activeCategory, setActiveCategory] = useState(0);
+  const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
+
   return (
     <section
       id="skills"
@@ -83,121 +69,198 @@ export const TechStack: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
-          {skillCategories.map((category, catIdx) => (
-            <motion.div
-              key={category.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{
-                duration: 0.6,
-                delay: catIdx * 0.1,
-                ease: [0.25, 0.46, 0.45, 0.94],
-              }}
-              className={`group relative rounded-2xl border border-neutral-200 dark:border-white/[0.06] bg-white dark:bg-[#0d0d0d] p-6 md:p-8 hover:border-[#C3E41D]/30 hover:shadow-[0_8px_60px_rgba(195,228,29,0.06)] transition-all duration-500 ${
-                catIdx === 3 ? "md:col-span-2" : ""
-              }`}
-            >
-              {/* Accent corner */}
-              <div className="absolute top-0 right-0 w-20 h-20 overflow-hidden rounded-tr-2xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <div className="absolute top-0 right-0 w-[1px] h-12 bg-gradient-to-b from-[#C3E41D]/40 to-transparent" />
-                <div className="absolute top-0 right-0 h-[1px] w-12 bg-gradient-to-l from-[#C3E41D]/40 to-transparent" />
-              </div>
-
-              {/* Category Header */}
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-[#C3E41D]/10 flex items-center justify-center text-lg">
-                  {category.icon}
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold font-['Fira_Code'] tracking-tight">
-                    {category.title}
-                  </h3>
-                  <p className="text-[10px] font-mono text-neutral-400 dark:text-neutral-500 tracking-wider uppercase">
-                    {category.skills.length} technologies
-                  </p>
-                </div>
-              </div>
-
-              {/* Skills Grid */}
-              <div
-                className={`grid gap-3 ${
-                  catIdx === 3
-                    ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
-                    : "grid-cols-1 sm:grid-cols-2"
-                }`}
-              >
-                {category.skills.map((skill, skillIdx) => (
-                  <motion.div
-                    key={skill.name}
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{
-                      duration: 0.3,
-                      delay: 0.2 + skillIdx * 0.05,
-                    }}
-                    className="group/skill flex items-center justify-between p-3 rounded-xl bg-neutral-50 dark:bg-white/[0.03] border border-neutral-200 dark:border-white/[0.05] hover:border-[#C3E41D]/30 transition-all duration-300"
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <span className="text-base">{skill.icon}</span>
-                      <span className="text-sm font-['Antic'] text-neutral-700 dark:text-neutral-300 group-hover/skill:text-[#C3E41D] transition-colors duration-300">
-                        {skill.name}
-                      </span>
-                    </div>
-
-                    {/* Level indicator bars */}
-                    <div className="flex items-center gap-1">
-                      {[1, 2, 3, 4].map((bar) => (
-                        <div
-                          key={bar}
-                          className={`w-1.5 h-3 rounded-sm transition-colors duration-300 ${
-                            bar <= levelBars[skill.level]
-                              ? "bg-[#C3E41D]"
-                              : "bg-neutral-200 dark:bg-neutral-800"
-                          }`}
-                        />
-                      ))}
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Legend */}
+        {/* Category Tabs */}
         <motion.div
-          className="mt-8 flex flex-wrap items-center justify-center gap-4"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          className="flex flex-wrap gap-2 mb-10"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
         >
-          {Object.entries(levelColors).map(([level, cls]) => (
-            <div
-              key={level}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-[9px] font-mono tracking-[0.1em] uppercase border ${cls}`}
+          {skillCategories.map((category, idx) => (
+            <button
+              key={category.title}
+              onClick={() => setActiveCategory(idx)}
+              className={`relative flex items-center gap-2.5 px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 cursor-pointer ${
+                activeCategory === idx
+                  ? "text-black dark:text-black bg-[#C3E41D] shadow-[0_0_20px_rgba(195,228,29,0.3)]"
+                  : "text-neutral-500 dark:text-neutral-400 bg-neutral-100 dark:bg-white/[0.04] border border-neutral-200 dark:border-white/[0.06] hover:border-[#C3E41D]/30 hover:text-neutral-800 dark:hover:text-neutral-200"
+              }`}
+              style={{ fontFamily: "'Fira Code', monospace" }}
             >
-              <div className="flex gap-0.5">
-                {[1, 2, 3, 4].map((bar) => (
+              <SkillIcon
+                name={category.iconName}
+                size={16}
+                className={
+                  activeCategory === idx
+                    ? "text-black"
+                    : ""
+                }
+              />
+              <span className="text-xs tracking-wide">{category.title}</span>
+              {activeCategory === idx && (
+                <motion.div
+                  layoutId="activeTab"
+                  className="absolute inset-0 rounded-xl bg-[#C3E41D] -z-10"
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                />
+              )}
+            </button>
+          ))}
+        </motion.div>
+
+        {/* Skills Grid */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeCategory}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4"
+          >
+            {skillCategories[activeCategory].skills.map((skill, skillIdx) => {
+              const isHovered = hoveredSkill === skill.name;
+              const effectColor = skill.color === "inherit" ? "#C3E41D" : skill.color;
+
+              return (
+                <motion.div
+                  key={skill.name}
+                  initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{
+                    duration: 0.4,
+                    delay: skillIdx * 0.07,
+                    ease: [0.25, 0.46, 0.45, 0.94],
+                  }}
+                  onMouseEnter={() => setHoveredSkill(skill.name)}
+                  onMouseLeave={() => setHoveredSkill(null)}
+                  className="group relative rounded-2xl border border-neutral-200 dark:border-white/[0.06] bg-white dark:bg-[#0d0d0d] overflow-hidden transition-all duration-500 hover:border-transparent"
+                  style={{
+                    boxShadow: isHovered
+                      ? `0 0 0 1px ${effectColor}30, 0 8px 40px ${effectColor}12`
+                      : "none",
+                  }}
+                >
+                  {/* Hover gradient overlay */}
                   <div
-                    key={bar}
-                    className={`w-1 h-2 rounded-sm ${
-                      bar <= levelBars[level]
-                        ? "bg-current"
-                        : "bg-current opacity-20"
-                    }`}
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                    style={{
+                      background: `radial-gradient(ellipse at top left, ${effectColor}08, transparent 70%)`,
+                    }}
                   />
-                ))}
+
+                  {/* Top accent line */}
+                  <div
+                    className="absolute top-0 left-0 right-0 h-[2px] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"
+                    style={{ backgroundColor: effectColor }}
+                  />
+
+                  <div className="relative p-5 flex flex-col items-center text-center gap-3">
+                    {/* Icon container */}
+                    <div
+                      className="relative shrink-0 w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-500"
+                      style={{
+                        backgroundColor: isHovered
+                          ? `${effectColor}18`
+                          : "var(--skill-icon-bg, rgba(195,228,29,0.06))",
+                        boxShadow: isHovered
+                          ? `0 4px 20px ${effectColor}15`
+                          : "none",
+                      }}
+                    >
+                      <SkillIcon
+                        name={skill.iconName}
+                        size={24}
+                        className="transition-all duration-500"
+                        style={{ color: skill.color }}
+                      />
+                      {/* Ping animation on hover */}
+                      {isHovered && (
+                        <motion.div
+                          className="absolute inset-0 rounded-xl"
+                          initial={{ opacity: 0.6, scale: 1 }}
+                          animate={{ opacity: 0, scale: 1.5 }}
+                          transition={{
+                            duration: 1,
+                            repeat: Infinity,
+                            ease: "easeOut",
+                          }}
+                          style={{
+                            border: `1px solid ${effectColor}`,
+                          }}
+                        />
+                      )}
+                    </div>
+
+                    {/* Skill name */}
+                    <h4 className="text-sm font-semibold text-neutral-800 dark:text-neutral-200 font-['Fira_Code'] tracking-tight group-hover:text-neutral-900 dark:group-hover:text-white transition-colors duration-300">
+                      {skill.name}
+                    </h4>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Stats bar */}
+        <motion.div
+          className="mt-12 flex flex-wrap items-center justify-center gap-6 md:gap-10"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+        >
+          {[
+            {
+              value: skillCategories.reduce(
+                (acc, cat) => acc + cat.skills.length,
+                0
+              ),
+              label: "Technologies",
+            },
+            {
+              value: skillCategories.length,
+              label: "Categories",
+            },
+          ].map((stat, i) => (
+            <div key={stat.label} className="flex items-center gap-3">
+              {i > 0 && (
+                <div className="hidden md:block w-[1px] h-6 bg-neutral-300 dark:bg-white/10 -ml-3 md:-ml-5" />
+              )}
+              <div className="text-center">
+                <motion.span
+                  className="block text-2xl md:text-3xl font-bold font-['Fira_Code'] text-[#C3E41D]"
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{
+                    duration: 0.5,
+                    delay: 0.6 + i * 0.1,
+                    type: "spring",
+                  }}
+                >
+                  {stat.value}+
+                </motion.span>
+                <span className="text-[10px] font-mono uppercase tracking-[0.15em] text-neutral-400 dark:text-neutral-500">
+                  {stat.label}
+                </span>
               </div>
-              {level}
             </div>
           ))}
         </motion.div>
       </div>
+
+      {/* CSS variable overrides for light/dark */}
+      <style>{`
+        :root {
+          --skill-icon-bg: rgba(195, 228, 29, 0.06);
+        }
+        .dark {
+          --skill-icon-bg: rgba(195, 228, 29, 0.06);
+        }
+      `}</style>
     </section>
   );
 };
