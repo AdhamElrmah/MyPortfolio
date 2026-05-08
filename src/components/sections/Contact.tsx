@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { motion, useInView, AnimatePresence, Variants } from "framer-motion";
+import { motion, useInView, AnimatePresence, type Variants } from "framer-motion";
 
 const socials = [
   {
