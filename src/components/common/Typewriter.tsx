@@ -20,7 +20,7 @@ export const Typewriter: React.FC<TypewriterProps> = ({
   const [text, setText] = useState("");
   const [phraseIdx, setPhraseIdx] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const currentPhrase = phrases[phraseIdx];

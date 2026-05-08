@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { motion, useInView, AnimatePresence } from "framer-motion";
+import { motion, useInView, AnimatePresence, Variants } from "framer-motion";
 
 const socials = [
   {
@@ -158,7 +158,7 @@ export const Contact: React.FC = () => {
     }
   };
 
-  const fade = {
+  const fade: Variants = {
     hidden: { opacity: 0, y: 24 },
     visible: {
       opacity: 1,
