@@ -90,6 +90,16 @@ body {
   cursor: none;
 }
 
+/* Text selection */
+::selection {
+  background-color: rgba(195, 228, 29, 0.9);
+  color: #000000;
+}
+::-moz-selection {
+  background-color: rgba(195, 228, 29, 0.9);
+  color: #000000;
+}
+
 /* Custom cursor */
 .custom-cursor {
   pointer-events: none;

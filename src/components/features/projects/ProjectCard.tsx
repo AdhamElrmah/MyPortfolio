@@ -5,7 +5,7 @@ import type { Project } from "../../../types/project";
 
 interface ProjectCardProps {
   project: Project;
-  variant?: "featured" | "default";
+  variant?: "featured" | "default" | "compact";
   index?: number;
 }
 
@@ -16,6 +16,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 }) => {
   const navigate = useNavigate();
   const isFeatured = variant === "featured";
+  const isCompact = variant === "compact";
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -52,6 +53,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           className={`relative overflow-hidden ${
             isFeatured
               ? "aspect-[16/10] lg:aspect-auto lg:w-[55%] lg:min-h-[420px]"
+              : isCompact
+              ? "aspect-[16/9]"
               : "aspect-[16/10]"
           }`}
         >
@@ -91,6 +94,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           className={`relative p-6 md:p-8 ${
             isFeatured
               ? "lg:w-[45%] lg:flex lg:flex-col lg:justify-between lg:p-10"
+              : isCompact
+              ? "p-4 md:p-5"
               : ""
           }`}
         >
@@ -113,6 +118,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
               className={`font-bold font-['Fira_Code'] tracking-tight leading-tight mb-3 group-hover:text-[#C3E41D] transition-colors duration-300 ${
                 isFeatured
                   ? "text-2xl md:text-3xl lg:text-3xl"
+                  : isCompact
+                  ? "text-base md:text-lg"
                   : "text-xl md:text-2xl"
               }`}
             >
@@ -132,7 +139,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
             {/* Tech tags */}
             <div className="flex flex-wrap gap-1.5 mb-5">
-              {project.tech.slice(0, isFeatured ? 6 : 4).map((t) => (
+              {project.tech.slice(0, isFeatured ? 6 : isCompact ? 3 : 4).map((t) => (
                 <span
                   key={t}
                   className="text-[9px] font-mono px-2.5 py-1 rounded-md backdrop-blur-sm bg-neutral-100 dark:bg-white/[0.05] text-neutral-500 dark:text-neutral-400 border border-neutral-200 dark:border-white/[0.06] group-hover:border-[#C3E41D]/20 group-hover:text-neutral-700 dark:group-hover:text-neutral-300 transition-all duration-300"
@@ -140,9 +147,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                   {t}
                 </span>
               ))}
-              {project.tech.length > (isFeatured ? 6 : 4) && (
+              {project.tech.length > (isFeatured ? 6 : isCompact ? 3 : 4) && (
                 <span className="text-[9px] font-mono px-2 py-1 rounded-md text-neutral-400 dark:text-neutral-500">
-                  +{project.tech.length - (isFeatured ? 6 : 4)}
+                  +{project.tech.length - (isFeatured ? 6 : isCompact ? 3 : 4)}
                 </span>
               )}
             </div>

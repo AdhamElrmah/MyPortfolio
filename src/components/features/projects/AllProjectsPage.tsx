@@ -9,18 +9,41 @@ import { useTheme } from "../../../hooks/useTheme";
 /* ── Extract unique categories ─────────────────────── */
 const allCategories = ["All", ...new Set(projects.map((p) => p.category))];
 
+const ITEMS_PER_PAGE = 6;
+
 export const AllProjectsPage: React.FC = () => {
   const { isDark, toggleTheme } = useTheme();
   const [activeFilter, setActiveFilter] = useState("All");
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  // Reset page on filter change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeFilter]);
+
   const filtered =
     activeFilter === "All"
       ? projects
       : projects.filter((p) => p.category === activeFilter);
+
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+  const paginatedProjects = filtered.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  const goToPage = (page: number) => {
+    if (page < 1 || page > totalPages) return;
+    setCurrentPage(page);
+    const grid = document.getElementById("projects-grid");
+    if (grid) {
+      grid.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   return (
     <div
@@ -193,33 +216,55 @@ export const AllProjectsPage: React.FC = () => {
       </motion.div>
 
       {/* ── Project Grid ───────────────────────── */}
-      <main className="px-6 md:px-12 lg:px-24 py-12 md:py-20 relative">
+      <main
+        id="projects-grid"
+        className="px-6 md:px-12 lg:px-24 py-12 md:py-20 relative scroll-mt-20"
+      >
         {/* Ambient glow */}
         <div className="absolute bottom-1/3 right-0 w-[400px] h-[400px] bg-[#C3E41D]/[0.01] rounded-full blur-[100px] pointer-events-none" />
 
         <div className="max-w-7xl mx-auto relative z-10">
-          {/* Results count */}
-          <motion.p
-            className="text-xs font-mono text-neutral-400 dark:text-neutral-500 tracking-wider mb-8"
-            key={activeFilter}
+          {/* Results count + page info */}
+          <motion.div
+            className="flex items-center justify-between mb-8"
+            key={`${activeFilter}-${currentPage}-info`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
           >
-            Showing {filtered.length} of {projects.length} projects
-          </motion.p>
+            <p className="text-xs font-mono text-neutral-400 dark:text-neutral-500 tracking-wider">
+              Showing{" "}
+              {(currentPage - 1) * ITEMS_PER_PAGE + 1}–
+              {Math.min(currentPage * ITEMS_PER_PAGE, filtered.length)} of{" "}
+              {filtered.length}
+            </p>
+            {totalPages > 1 && (
+              <p className="text-xs font-mono text-neutral-400 dark:text-neutral-500 tracking-wider hidden sm:block">
+                Page{" "}
+                <span className="text-[#C3E41D]">
+                  {String(currentPage).padStart(2, "0")}
+                </span>{" "}
+                / {String(totalPages).padStart(2, "0")}
+              </p>
+            )}
+          </motion.div>
 
           <AnimatePresence mode="wait">
             <motion.div
-              key={activeFilter}
+              key={`${activeFilter}-${currentPage}`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.4 }}
-              className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6"
             >
-              {filtered.map((project, i) => (
-                <ProjectCard key={project.id} project={project} index={i} />
+              {paginatedProjects.map((project, i) => (
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  index={i}
+                  variant="compact"
+                />
               ))}
             </motion.div>
           </AnimatePresence>
@@ -235,6 +280,103 @@ export const AllProjectsPage: React.FC = () => {
                 No projects in this category yet.
               </p>
             </motion.div>
+          )}
+
+          {/* ── Pagination ──────────────────────────── */}
+          {totalPages > 1 && (
+            <motion.nav
+              aria-label="Pagination"
+              className="flex items-center justify-center gap-2 mt-12 md:mt-16"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              {/* Previous */}
+              <button
+                onClick={() => goToPage(currentPage - 1)}
+                disabled={currentPage === 1}
+                aria-label="Previous page"
+                className={`group/btn w-10 h-10 md:w-11 md:h-11 rounded-full border flex items-center justify-center transition-all duration-300 ${
+                  currentPage === 1
+                    ? "border-neutral-200 dark:border-white/[0.04] text-neutral-300 dark:text-neutral-700 cursor-not-allowed"
+                    : "border-neutral-300 dark:border-white/[0.08] text-neutral-500 dark:text-neutral-400 hover:border-[#C3E41D]/50 hover:text-[#C3E41D] hover:bg-[#C3E41D]/5 cursor-pointer"
+                }`}
+              >
+                <svg
+                  className="w-4 h-4 transition-transform duration-200 group-hover/btn:-translate-x-0.5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M15 18l-6-6 6-6" />
+                </svg>
+              </button>
+
+              {/* Page numbers */}
+              <div className="flex items-center gap-1 mx-1 md:mx-3">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (page) => (
+                    <button
+                      key={page}
+                      onClick={() => goToPage(page)}
+                      aria-label={`Page ${page}`}
+                      aria-current={
+                        page === currentPage ? "page" : undefined
+                      }
+                      className="relative w-10 h-10 md:w-11 md:h-11 rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer"
+                    >
+                      {page === currentPage && (
+                        <motion.div
+                          layoutId="activePage"
+                          className="absolute inset-0 rounded-full bg-[#C3E41D] shadow-[0_0_24px_rgba(195,228,29,0.25)]"
+                          transition={{
+                            type: "spring",
+                            stiffness: 350,
+                            damping: 30,
+                          }}
+                        />
+                      )}
+                      <span
+                        className={`relative z-10 text-xs font-mono font-bold tracking-wider transition-colors duration-300 ${
+                          page === currentPage
+                            ? "text-black"
+                            : "text-neutral-400 dark:text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300"
+                        }`}
+                      >
+                        {String(page).padStart(2, "0")}
+                      </span>
+                    </button>
+                  )
+                )}
+              </div>
+
+              {/* Next */}
+              <button
+                onClick={() => goToPage(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                aria-label="Next page"
+                className={`group/btn w-10 h-10 md:w-11 md:h-11 rounded-full border flex items-center justify-center transition-all duration-300 ${
+                  currentPage === totalPages
+                    ? "border-neutral-200 dark:border-white/[0.04] text-neutral-300 dark:text-neutral-700 cursor-not-allowed"
+                    : "border-neutral-300 dark:border-white/[0.08] text-neutral-500 dark:text-neutral-400 hover:border-[#C3E41D]/50 hover:text-[#C3E41D] hover:bg-[#C3E41D]/5 cursor-pointer"
+                }`}
+              >
+                <svg
+                  className="w-4 h-4 transition-transform duration-200 group-hover/btn:translate-x-0.5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
+              </button>
+            </motion.nav>
           )}
         </div>
       </main>

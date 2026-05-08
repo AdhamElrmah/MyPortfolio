@@ -27,6 +27,8 @@ import {
   SiPrisma,
   SiPostman,
   SiMongoose,
+  SiUbuntu,
+  SiCplusplus,
 } from "react-icons/si";
 import { FaAws } from "react-icons/fa";
 import { TbApi, TbBrandVscode } from "react-icons/tb";
@@ -62,6 +64,8 @@ const iconMap: Record<string, React.ComponentType<{ size?: number; className?: s
   prisma: SiPrisma,
   postman: SiPostman,
   mongoose: SiMongoose,
+  ubuntu: SiUbuntu,
+  cpp: SiCplusplus,
 };
 
 interface SkillIconProps {

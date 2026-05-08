@@ -1,18 +1,26 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { skillsRow1, skillsRow2, skillsRow3 } from "../../data/skills";
+import { projects } from "../../data/projects";
 
-const commands = {
-  help: "Available commands:\n- about     : Print my short bio\n- skills    : List my tech stack\n- contact   : Show my contact info\n- clear     : Clear the terminal\n- sudo hire me : ???",
-  about: "Adham Elrmah - Software Engineer based in Egypt.\nSpecializing in high-performance web applications with React, TypeScript, and Node.js.",
+const projectList = projects
+  .sort((a, b) => a.id - b.id)
+  .map((p) => `  [${String(p.id).padStart(2, "0")}] ${p.title} — ${p.category.toLowerCase()}`)
+  .join("\n");
+
+const commands: Record<string, string> = {
+  help: "Available commands:\n- about      : Print my short bio\n- skills     : List my tech stack\n- projects   : Browse my projects\n- contact    : Show my contact info\n- education  : Academic background\n- clear      : Clear the terminal\n- sudo hire me : ???",
+  about: "Adham Elrmah — Software Engineer based in Egypt.\nSpecializing in high-performance web applications with React, TypeScript, and Node.js.\nCurrently building full-stack solutions with the MERN stack.\n\n  → 7 projects  |  12+ technologies  |  1 year ALX scholarship",
   skills: `Frontend & UI:\n  ${skillsRow1.map(s => s.name).join(", ")}\n\nBackend & Databases:\n  ${skillsRow2.map(s => s.name).join(", ")}\n\nTools & DevOps:\n  ${skillsRow3.map(s => s.name).join(", ")}`,
-  contact: "Email: adhamelrmah@gmail.com\nGitHub: @AdhamElrmah\nLinkedIn: adham-elrmah",
+  projects: `All Projects (${projects.length}):\n${projectList}\n\nRun 'open <id>' to view a project page.`,
+  contact: "Email    : adhamelrmah@gmail.com\nGitHub   : github.com/AdhamElrmah\nLinkedIn : linkedin.com/in/adham-elrmah",
+  education: "ALX Software Engineering — 12-month scholarship (ALX Africa)\n  → C, Python, Shell, Linux, DevOps, Networking\n\nAIET — BSc Computer Engineering\n  → Full-stack capstone project (ByDrive)",
 };
 
 export const TerminalTerminal: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [history, setHistory] = useState<{ type: "input" | "output"; text: string }[]>([
-    { type: "output", text: "Welcome to Adham's Terminal v1.0.0\nType 'help' to see available commands." }
+    { type: "output", text: "Welcome to Adham's Terminal v2.0.0\nType 'help' to see available commands." }
   ]);
   const [input, setInput] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -72,8 +80,30 @@ export const TerminalTerminal: React.FC = () => {
       setHistory(newHistory);
       setTimeout(() => {
         setIsOpen(false);
-        document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+        if (window.location.pathname === "/") {
+          document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+        } else {
+          sessionStorage.setItem("scrollTo", "contact");
+          window.location.href = "/";
+        }
       }, 1500);
+    } else if (cmd.startsWith("open ")) {
+      const id = parseInt(cmd.split(" ")[1]);
+      const project = projects.find((p) => p.id === id);
+      if (project) {
+        newHistory.push({ type: "output", text: `Opening "${project.title}"...` });
+        setHistory(newHistory);
+        setTimeout(() => {
+          setIsOpen(false);
+          window.location.href = `/project/${id}`;
+        }, 800);
+      } else {
+        newHistory.push({ type: "output", text: `Project #${id} not found. Run 'projects' to see available IDs.` });
+        setHistory(newHistory);
+      }
+    } else if (cmd === "whoami") {
+      newHistory.push({ type: "output", text: "You are a visitor exploring Adham's portfolio. Welcome! 🎉" });
+      setHistory(newHistory);
     } else if (cmd in commands) {
       newHistory.push({ type: "output", text: commands[cmd as keyof typeof commands] });
       setHistory(newHistory);

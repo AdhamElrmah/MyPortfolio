@@ -28,18 +28,25 @@ export const PortfolioLayout: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
+    // Handle scrollTo from Link state
     if (location.state && location.state.scrollTo) {
       const targetId = location.state.scrollTo;
-      // Clear state immediately
       window.history.replaceState({}, document.title);
-      // First jump to top instantly so user doesn't see an intermediate position
       window.scrollTo(0, 0);
-      // Then scroll to the target section after DOM is ready
       const timer = setTimeout(() => {
-        const element = document.getElementById(targetId);
-        if (element) {
-          element.scrollIntoView({ behavior: "smooth" });
-        }
+        document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth" });
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+
+    // Handle scrollTo from URL query params (e.g. terminal redirect)
+    const params = new URLSearchParams(window.location.search);
+    const scrollTo = params.get("scrollTo");
+    if (scrollTo) {
+      window.history.replaceState({}, document.title, "/");
+      window.scrollTo(0, 0);
+      const timer = setTimeout(() => {
+        document.getElementById(scrollTo)?.scrollIntoView({ behavior: "smooth" });
       }, 300);
       return () => clearTimeout(timer);
     }
