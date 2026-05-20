@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { motion, useInView, AnimatePresence, type Variants } from "framer-motion";
+import emailjs from "@emailjs/browser";
 
 const socials = [
   {
@@ -121,36 +122,35 @@ export const Contact: React.FC = () => {
     const form = e.currentTarget;
     const formData = new FormData(form);
 
-    // Add Date and Time
-    formData.append(
-      "Date_and_Time",
-      new Date().toLocaleString("en-US", {
+    const templateParams = {
+      name: anonymous ? "Anonymous" : (formData.get("name") as string),
+      email: anonymous ? "N/A" : (formData.get("email") as string),
+      title: formData.get("_subject") as string,
+      message: formData.get("message") as string,
+      time: new Date().toLocaleString("en-US", {
         weekday: "long",
         year: "numeric",
         month: "long",
         day: "numeric",
         hour: "2-digit",
         minute: "2-digit",
-      })
-    );
+      }),
+    };
 
     try {
-      const response = await fetch(
-        "https://formsubmit.co/ajax/adhamelrmah@gmail.com",
-        {
-          method: "POST",
-          body: formData,
-        }
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        templateParams,
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
       );
 
-      if (response.ok) {
-        setIsSuccess(true);
-        form.reset();
-        setTimeout(() => {
-          setIsSuccess(false);
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        }, 5000);
-      }
+      setIsSuccess(true);
+      form.reset();
+      setTimeout(() => {
+        setIsSuccess(false);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }, 5000);
     } catch (error) {
       console.error(error);
     } finally {
@@ -445,21 +445,9 @@ export const Contact: React.FC = () => {
               </AnimatePresence>
 
               <form
-                action="https://formsubmit.co/adhamelrmah@gmail.com"
-                method="POST"
                 className="flex flex-col gap-5 flex-1"
                 onSubmit={handleSubmit}
               >
-                <input type="text" name="_honey" className="hidden" />
-                <input type="hidden" name="_captcha" value="false" />
-                <input
-                  type="hidden"
-                  name="_next"
-                  value={
-                    typeof window !== "undefined" ? window.location.href : ""
-                  }
-                />
-                <input type="hidden" name="_template" value="table" />
 
                 {/* Anon toggle */}
                 <div className="flex items-center justify-between p-3.5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-white/[0.02]">
