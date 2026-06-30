@@ -24,8 +24,12 @@ const AnimatedProjectStat: React.FC<{ end: number; suffix: string; label: string
 };
 
 export const Projects: React.FC = () => {
-  const featured = projects[0];
-  const rest = projects.slice(1, 4);
+  const featured = projects.find((p) => p.id === 1) || projects[0];
+  const rest = [
+    projects.find((p) => p.id === 2), // Forkify
+    projects.find((p) => p.id === 8), // DarkAtlas Asset Management API
+    projects.find((p) => p.id === 4), // Custom printf
+  ].filter(Boolean) as typeof projects;
 
   return (
     <section

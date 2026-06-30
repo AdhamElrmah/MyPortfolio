@@ -23,6 +23,7 @@ export const skillsRow2: Skill[] = [
   { name: "Express", iconName: "express", color: "inherit" },
   { name: "MongoDB", iconName: "mongodb", color: "#47A248" },
   { name: "Python", iconName: "python", color: "#3776AB" },
+  { name: "FastAPI", iconName: "fastapi", color: "#009688" },
   { name: "C++", iconName: "cpp", color: "#00599C" },
   { name: "REST APIs", iconName: "api", color: "#FF6C37" },
   { name: "JWT Auth", iconName: "jwt", color: "#D63AFF" },

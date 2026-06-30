@@ -10,7 +10,7 @@ const projectList = projects
 
 const commands: Record<string, string> = {
   help: "Available commands:\n- about      : Print my short bio\n- skills     : List my tech stack\n- projects   : Browse my projects\n- contact    : Show my contact info\n- education  : Academic background\n- clear      : Clear the terminal\n- sudo hire me : ???",
-  about: "Adham Elrmah — Software Engineer based in Egypt.\nSpecializing in high-performance web applications with React, TypeScript, and Node.js.\nCurrently building full-stack solutions with the MERN stack.\n\n  → 7 projects  |  12+ technologies  |  1 year ALX scholarship",
+  about: "Adham Elrmah — Software Engineer based in Egypt.\nSpecializing in high-performance web applications with React, TypeScript, and Node.js.\nCurrently building full-stack solutions with the MERN stack.\n\n  → 8 projects  |  12+ technologies  |  1 year ALX scholarship",
   skills: `Frontend & UI:\n  ${skillsRow1.map(s => s.name).join(", ")}\n\nBackend & Databases:\n  ${skillsRow2.map(s => s.name).join(", ")}\n\nTools & DevOps:\n  ${skillsRow3.map(s => s.name).join(", ")}`,
   projects: `All Projects (${projects.length}):\n${projectList}\n\nRun 'open <id>' to view a project page.`,
   contact: "Email    : adhamelrmah@gmail.com\nGitHub   : github.com/AdhamElrmah\nLinkedIn : linkedin.com/in/adham-elrmah",

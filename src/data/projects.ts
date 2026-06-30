@@ -22,6 +22,7 @@ import forkifyFlow3 from "../assets/projects-optimized/forkify-flow-3.webp";
 const printfImg = "https://images.unsplash.com/photo-1629654297299-c8506221ca97?w=1200&q=80";
 const airbnbImg = "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200&q=80";
 import alxImg from "../assets/projects-optimized/alx.webp";
+import darkatlasImg from "../assets/projects-optimized/darkatlas.jpg";
 
 export const projects: Project[] = [
   {
@@ -46,7 +47,7 @@ export const projects: Project[] = [
     image: byDrive1,
     gallery: [byDrive1, byDriveImg, byDrive2, byDrive3, byDrive4, byDrive5, byDrive6, byDrive7, byDrive8],
     github: "https://github.com/AdhamElrmah/DEPI-Final-Project",
-    link: "https://bejewelled-donut-610ab5.netlify.app/",
+    link: "https://bydrive.adhamelrmah.online/",
     overview:
       "ByDrive is a sophisticated car rental platform built to address inefficiencies in traditional vehicle rental systems. The application serves as a complete digital transformation solution, enabling customers to discover, book, and manage vehicle rentals seamlessly while providing administrators with comprehensive inventory and operational oversight. The platform demonstrates enterprise-grade architecture through modular design, role-based access control, and seamless database flexibility (MongoDB/JSON). Deployed to production with 50+ cars across multiple categories and full payment integration support.",
     problem:
@@ -345,5 +346,62 @@ export const projects: Project[] = [
       "The main challenge was achieving smooth 60fps animations across all devices while maintaining a lightweight page. Optimized by using CSS transforms (GPU-accelerated) instead of layout-triggering properties.",
     outcomes:
       "Delivered a polished automotive landing page with perfect Lighthouse accessibility and SEO scores, demonstrating strong fundamentals in semantic HTML and responsive CSS.",
+  },
+  {
+    id: 8,
+    title: "DarkAtlas Asset Management API",
+    category: "BACKEND ENGINEERING / CYBERSECURITY",
+    industry: "Cybersecurity / Threat Intelligence",
+    description:
+      "Self-contained, production-grade Asset Management system for an Attack Surface Monitoring platform, tracking lifecycle and graph-based relationships.",
+    duration: "1 week (Internship Acceptance Task)",
+    role: "Backend Engineer",
+    tech: [
+      "Python",
+      "FastAPI",
+      "PostgreSQL",
+      "SQLAlchemy 2.0",
+      "Alembic",
+      "Docker",
+      "Docker Compose",
+      "Pytest",
+      "Ruff",
+    ],
+    image: darkatlasImg,
+    gallery: [darkatlasImg],
+    github: "https://github.com/AdhamElrmah/Buguard-Backend-Internship-Task",
+    link: "#",
+    overview:
+      "DarkAtlas is Buguard's Attack Surface Monitoring (ASM) platform. This project is a self-contained Asset Management module at the heart of DarkAtlas, acting as the system of record. It ingests discovered assets (domains, subdomains, IPs, certificates, services, technologies), removes duplicates, automates lifecycle states, and exposes a RESTful API for query, analysis, and reporting. The implementation uses a robust async-native stack with FastAPI, SQLAlchemy 2.0 (asyncpg), and PostgreSQL.",
+    problem:
+      "Attack surface data is inherently messy, duplicate-heavy, and constantly changing. The challenge lies in building a system that can ingest bulk scans, deduplicate assets atomically on write (upserting values/merging metadata), preserve immutable discovery data, manage complex multi-entity relationships (e.g. certificate → domain, service → IP), and efficiently filter and sort massive datasets while securing write operations.",
+    research:
+      "Studied ASM lifecycle flows and canonical data representations for domains, certificates, and networking services. Researched PostgreSQL indexing strategies for array/JSON data types, identifying that using PostgreSQL's native TEXT[] with a GIN index is optimal for asset tag search, and JSONB is ideal for schema-less asset metadata.",
+    decisions: [
+      {
+        title: "Layered Architecture",
+        description:
+          "Structured the codebase into explicit Router, Service, and Repository layers to maximize modularity and separation of concerns, ensuring high testability of business logic.",
+      },
+      {
+        title: "PostgreSQL Native Data Types",
+        description:
+          "Utilized native Postgres arrays for tags (backed by GIN index for high-performance filter queries) and JSONB for flexible metadata structures like service banners or SSL fields.",
+      },
+      {
+        title: "Idempotent Import & Deduplication",
+        description:
+          "Configured database-level UNIQUE(type, value) constraints, implementing atomic upserts that perform shallow merges on metadata, union merges on tags, and automatically update last_seen.",
+      },
+      {
+        title: "Deterministic Lifecycle Rules",
+        description:
+          "Designed lifecycle rules where a stale asset seen again reverts to active, but archived assets remain archived to respect manual administrative overrides.",
+      },
+    ],
+    challenges:
+      "Implementing atomic deduplication and lifecycle state transition rules during high-concurrency bulk imports. Handling malformed or partial records gracefully within a batch without failing the entire transaction was resolved by implementing a partial success model in the bulk import endpoint, returning detailed indices of failed records while persisting the valid ones.",
+    outcomes:
+      "Delivered a production-ready codebase featuring a fully functional REST API with 100% compliance with RESTful standards, automated async database migrations via Alembic, selective API key security on write routes, and a robust Pytest suite with 19 automated tests covering CRUD, deduplication, and relationship graph operations. Fully containerized using Docker Compose for local orchestration.",
   },
 ];
