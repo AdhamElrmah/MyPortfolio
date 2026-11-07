@@ -14,14 +14,14 @@ export const education: Education = {
   institution: "Alexandria Higher Institute of Engineering and Technology",
   shortName: "AIET",
   location: "Alexandria, Egypt",
-  period: "2022 — 2027",
+  period: "2022 — 2027 (Expected)",
   status: "in-progress",
   description:
-    "Final-year Computer Engineering student with a strong foundation in software development, data structures, algorithms, and system design.",
+    "Final-year Computer Engineering student (GPA: 3.0 / 4.0) building full-stack web applications and scalable backend systems. Currently serving as sole frontend engineer on Medora, a multi-tenant clinic management SaaS built by an 11-member graduation team.",
   highlights: [
-    "Specializing in Software Engineering & Web Technologies",
-    "Core coursework: Data Structures, Algorithms, Databases, Networking",
-    "Built multiple academic projects applying real-world engineering principles",
-    "Final year — expected graduation 2027",
+    "GPA: 3.0 / 4.0 — Expected Graduation 2027",
+    "Graduation Project: Sole Frontend Engineer on Medora (Angular 21 SSR, NgRx Signals, PrimeNG, WCAG AA)",
+    "Certifications: DEPI React Frontend • ITI Angular Web Development • Beeviro Web Developer Internship",
+    "Languages: Arabic (Native) • English (Professional)",
   ],
 };

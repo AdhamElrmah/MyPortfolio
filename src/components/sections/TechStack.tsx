@@ -43,9 +43,11 @@ const MarqueeRow: React.FC<MarqueeRowProps> = ({
 
       <div
         className="relative overflow-hidden"
-        onMouseEnter={() => pauseOnHover && setIsPaused(true)}
+        onMouseEnter={() => {
+          if (pauseOnHover) setIsPaused(true);
+        }}
         onMouseLeave={() => {
-          pauseOnHover && setIsPaused(false);
+          if (pauseOnHover) setIsPaused(false);
           setHoveredSkill(null);
         }}
         style={{

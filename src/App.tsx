@@ -58,10 +58,9 @@ function AnimatedRoutes() {
 function App() {
   return (
     <Router>
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@700&family=Antic&display=swap"
-      />
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
       <CustomCursor />
       <ScrollProgress />
       <WIPBanner />

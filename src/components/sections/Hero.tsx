@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { BlurText } from "../common/BlurText";
 import { Typewriter } from "../common/Typewriter";
-import adhamImage from "../../assets/adham.png";
+import adhamImage from "../../assets/adham.webp";
 import { InfiniteGrid } from "../ui/the-infinite-grid";
 
 const taglines = [
@@ -14,7 +14,7 @@ const taglines = [
 
 export const Hero: React.FC = () => {
   return (
-    <main
+    <section
       id="home"
       className="relative min-h-screen flex flex-col overflow-hidden"
     >
@@ -54,7 +54,10 @@ export const Hero: React.FC = () => {
               <div className="w-[65px] h-[110px] sm:w-[90px] sm:h-[152px] md:w-[110px] md:h-[185px] lg:w-[129px] lg:h-[218px] rounded-full overflow-hidden shadow-2xl transition-transform duration-300 hover:scale-110 cursor-pointer">
                 <img
                   src={adhamImage}
-                  alt="Adham Elrmah"
+                  alt="Adham Elrmah — Software Engineer"
+                  width={129}
+                  height={218}
+                  fetchPriority="high"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -97,6 +100,6 @@ export const Hero: React.FC = () => {
           </svg>
         </motion.a>
       </InfiniteGrid>
-    </main>
+    </section>
   );
 };

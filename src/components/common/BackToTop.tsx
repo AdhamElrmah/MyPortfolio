@@ -20,12 +20,13 @@ export const BackToTop: React.FC = () => {
     <AnimatePresence>
       {visible && (
         <motion.button
+          type="button"
           initial={{ opacity: 0, scale: 0.8, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.8, y: 20 }}
           transition={{ duration: 0.3 }}
           onClick={scrollToTop}
-          className="fixed bottom-6 right-6 z-50 w-11 h-11 rounded-full bg-[#C3E41D] text-black flex items-center justify-center shadow-[0_4px_20px_rgba(195,228,29,0.3)] hover:shadow-[0_8px_30px_rgba(195,228,29,0.5)] hover:scale-110 transition-all duration-300 cursor-hover"
+          className="fixed bottom-6 right-6 z-50 w-11 h-11 rounded-full bg-[#C3E41D] text-black flex items-center justify-center shadow-[0_4px_20px_rgba(195,228,29,0.3)] hover:shadow-[0_8px_30px_rgba(195,228,29,0.5)] hover:scale-110 transition-all duration-300 cursor-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C3E41D]"
           aria-label="Back to top"
         >
           <svg

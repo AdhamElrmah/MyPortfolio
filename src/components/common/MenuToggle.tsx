@@ -14,8 +14,11 @@ export const MenuToggle = React.forwardRef<
     <Magnetic>
       <button
         ref={ref}
+        type="button"
         onClick={onClick}
-        className="group relative flex h-12 w-12 items-center justify-center rounded-full z-50 focus:outline-none"
+        aria-expanded={isOpen}
+        aria-controls="navigation-menu"
+        className="group relative flex h-12 w-12 items-center justify-center rounded-full z-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C3E41D]"
         aria-label={isOpen ? "Close menu" : "Open menu"}
       >
         <div className="flex h-5 w-8 flex-col items-end justify-between px-1">

@@ -26,9 +26,9 @@ const AnimatedProjectStat: React.FC<{ end: number; suffix: string; label: string
 export const Projects: React.FC = () => {
   const featured = projects.find((p) => p.id === 1) || projects[0];
   const rest = [
-    projects.find((p) => p.id === 2), // Forkify
-    projects.find((p) => p.id === 8), // DarkAtlas Asset Management API
+    projects.find((p) => p.id === 8), // DarkAtlas / Buguard ASM API
     projects.find((p) => p.id === 4), // Custom printf
+    projects.find((p) => p.id === 2), // Forkify
   ].filter(Boolean) as typeof projects;
 
   return (
@@ -89,8 +89,8 @@ export const Projects: React.FC = () => {
           </div>
 
           <p className="text-neutral-500 dark:text-neutral-400/80 font-['Antic'] max-w-xs text-sm md:text-base lg:text-right">
-            Exploring the intersection of high-performance engineering and
-            high-fidelity design.
+            Full-stack platforms, async backend APIs, and low-level systems
+            built for real-world scale.
           </p>
         </motion.div>
 
@@ -117,8 +117,8 @@ export const Projects: React.FC = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           {[
-            { value: 15, suffix: "+", label: "Projects Built" },
-            { value: 10, suffix: "+", label: "Tech Stack" },
+            { value: 10, suffix: "+", label: "Projects Built" },
+            { value: 20, suffix: "+", label: "Tech Stack" },
             { value: 99, suffix: "%", label: "Uptime Record" },
             { value: 4.8, suffix: "", label: "Avg. Satisfaction" },
           ].map((stat, i) => (

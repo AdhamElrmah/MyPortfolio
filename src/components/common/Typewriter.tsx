@@ -44,8 +44,10 @@ export const Typewriter: React.FC<TypewriterProps> = ({
           setText(text.slice(0, -1));
         }, deletingSpeed);
       } else {
-        setIsDeleting(false);
-        setPhraseIdx((prev) => (prev + 1) % phrases.length);
+        timeoutRef.current = setTimeout(() => {
+          setIsDeleting(false);
+          setPhraseIdx((prev) => (prev + 1) % phrases.length);
+        }, deletingSpeed);
       }
     }
 
@@ -57,7 +59,7 @@ export const Typewriter: React.FC<TypewriterProps> = ({
   return (
     <span className={className} style={style}>
       {text}
-      <span className="animate-pulse text-[#C3E41D]">|</span>
+      <span className="animate-pulse text-[#C3E41D]" aria-hidden="true">|</span>
     </span>
   );
 };

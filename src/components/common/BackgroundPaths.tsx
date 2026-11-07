@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { motion } from "framer-motion";
 
 export function FloatingPaths({ position }: { position: number }) {
@@ -17,13 +18,13 @@ export function FloatingPaths({ position }: { position: number }) {
     }));
 
     return (
-        <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
             <svg
                 className="w-full h-full text-slate-950 dark:text-white"
                 viewBox="0 0 696 316"
                 fill="none"
+                aria-hidden="true"
             >
-                <title>Background Paths</title>
                 {paths.map((path) => (
                     <motion.path
                         key={path.id}
@@ -38,7 +39,7 @@ export function FloatingPaths({ position }: { position: number }) {
                             pathOffset: [0, 1, 0],
                         }}
                         transition={{
-                            duration: 20 + Math.random() * 10,
+                            duration: 20 + ((path.id * 7) % 11),
                             repeat: Number.POSITIVE_INFINITY,
                             ease: "linear",
                         }}

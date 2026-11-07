@@ -71,6 +71,9 @@ export const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme, activeSecti
             {isMenuOpen && (
               <motion.div
                 ref={menuRef}
+                id="navigation-menu"
+                role="menu"
+                aria-label="Navigation Menu"
                 initial={{ opacity: 0, y: -20, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -20, scale: 0.95 }}
@@ -84,11 +87,13 @@ export const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme, activeSecti
                 {menuItems.map((item, index) => (
                   <motion.button
                     key={item.label}
+                    type="button"
+                    role="menuitem"
                     onClick={() => handleNavClick(item.id)}
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.05 }}
-                    className="block w-full text-left text-lg md:text-xl font-bold tracking-tight py-1.5 px-2 cursor-pointer transition-colors duration-300"
+                    className="block w-full text-left text-lg md:text-xl font-bold tracking-tight py-1.5 px-2 cursor-pointer transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C3E41D] rounded-lg"
                     style={{
                       color: activeSection === item.id
                         ? "#C3E41D"
@@ -118,7 +123,8 @@ export const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme, activeSecti
         {/* Signature */}
         <Link
           to="/"
-          className="text-4xl"
+          aria-label="Adham Elrmah — Home"
+          className="text-4xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C3E41D] rounded-lg px-1"
           style={{
             color: isDark ? "hsl(0 0% 100%)" : "hsl(0 0% 10%)",
             fontFamily: "'Brush Script MT', 'Lucida Handwriting', cursive",
@@ -130,12 +136,14 @@ export const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme, activeSecti
         {/* Theme Toggle */}
         <button
           type="button"
+          role="switch"
+          aria-checked={isDark}
           onClick={toggleTheme}
-          className="relative w-16 h-8 rounded-full hover:opacity-80 transition-opacity"
+          className="relative w-16 h-8 rounded-full hover:opacity-80 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C3E41D]"
           style={{
             backgroundColor: isDark ? "hsl(0 0% 15%)" : "hsl(0 0% 90%)",
           }}
-          aria-label="Toggle theme"
+          aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
         >
           <div
             className="absolute top-1 left-1 w-6 h-6 rounded-full transition-transform duration-300"

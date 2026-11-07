@@ -22,6 +22,15 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   return (
     <motion.article
       onClick={() => navigate(`/project/${project.id}`)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          navigate(`/project/${project.id}`);
+        }
+      }}
+      role="link"
+      tabIndex={0}
+      aria-label={`View project details for ${project.title}`}
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
@@ -32,7 +41,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="group relative cursor-pointer"
+      className="group relative cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C3E41D] rounded-2xl"
     >
       <div
         className={`relative overflow-hidden rounded-2xl border backdrop-blur-sm transition-all duration-500 ${
@@ -65,6 +74,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           <img
             src={project.image}
             alt={project.title}
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-[1.05]"
             style={{
               filter: isHovered ? "brightness(1.1)" : "brightness(1)",
@@ -182,18 +193,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           </div>
         </div>
       </div>
-
-      {/* CSS variables */}
-      <style>{`
-        :root {
-          --card-bg: rgba(255, 255, 255, 0.8);
-          --card-border: rgba(230, 230, 230, 0.8);
-        }
-        .dark {
-          --card-bg: rgba(13, 13, 13, 0.8);
-          --card-border: rgba(255, 255, 255, 0.06);
-        }
-      `}</style>
     </motion.article>
   );
 };

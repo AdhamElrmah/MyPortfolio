@@ -4,7 +4,8 @@ import {
   motion, 
   useMotionValue, 
   useMotionTemplate, 
-  useAnimationFrame 
+  useAnimationFrame,
+  type MotionValue
 } from "framer-motion";
 
 const LG_BREAKPOINT = 1024;
@@ -88,7 +89,13 @@ export const InfiniteGrid = ({ className, children }: { className?: string, chil
   );
 };
 
-const GridPattern = ({ offsetX, offsetY }: { offsetX: any, offsetY: any }) => {
+const GridPattern = ({
+  offsetX,
+  offsetY,
+}: {
+  offsetX: MotionValue<number>;
+  offsetY: MotionValue<number>;
+}) => {
   return (
     <svg className="w-full h-full">
       <defs>

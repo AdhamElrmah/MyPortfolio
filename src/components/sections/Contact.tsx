@@ -212,7 +212,8 @@ export const Contact: React.FC = () => {
             <span className="sm:text-inherit text-[#C3E41D]"> Together</span>
           </h2>
           <p className="text-neutral-500 dark:text-neutral-400 font-['Antic'] max-w-md mx-auto mt-5 text-sm md:text-base">
-            Have a project in mind? Let's create something extraordinary.
+            Open to frontend or full-stack internships &amp; junior roles — or
+            have a project in mind? Let&apos;s connect.
           </p>
         </motion.div>
 
@@ -224,9 +225,11 @@ export const Contact: React.FC = () => {
             variants={fade}
           >
             {/* Email compact card */}
-            <div
+            <button
+              type="button"
               onClick={copyEmail}
-              className="sm:col-span-3 lg:col-span-1 group p-5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-white/[0.02] backdrop-blur-sm cursor-pointer transition-all duration-500 hover:border-[#C3E41D]/30 hover:shadow-[0_0_30px_rgba(195,228,29,0.06)] overflow-hidden relative"
+              aria-label="Copy email address: adhamelrmah@gmail.com"
+              className="w-full text-left sm:col-span-3 lg:col-span-1 group p-5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-white/[0.02] backdrop-blur-sm cursor-pointer transition-all duration-500 hover:border-[#C3E41D]/30 hover:shadow-[0_0_30px_rgba(195,228,29,0.06)] overflow-hidden relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C3E41D]"
             >
               <div className="absolute top-0 right-0 w-16 h-16 pointer-events-none">
                 <div className="absolute top-0 right-0 w-[1px] h-10 bg-gradient-to-b from-[#C3E41D]/30 to-transparent" />
@@ -293,7 +296,7 @@ export const Contact: React.FC = () => {
                   )}
                 </div>
               </div>
-            </div>
+            </button>
 
             {/* Social cards */}
             {socials.map((s) => (
@@ -477,8 +480,11 @@ export const Contact: React.FC = () => {
                   </div>
                   <button
                     type="button"
+                    role="switch"
+                    aria-checked={anonymous}
+                    aria-label="Send message anonymously"
                     onClick={() => setAnonymous(!anonymous)}
-                    className={`relative w-10 h-5.5 rounded-full transition-all duration-300 ${anonymous ? "bg-[#C3E41D]" : "bg-neutral-300 dark:bg-neutral-700"}`}
+                    className={`relative w-10 h-5.5 rounded-full transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C3E41D] ${anonymous ? "bg-[#C3E41D]" : "bg-neutral-300 dark:bg-neutral-700"}`}
                     style={{ height: 22 }}
                   >
                     <div
@@ -587,7 +593,7 @@ export const Contact: React.FC = () => {
         </div>
 
         {/* Footer */}
-        <motion.div
+        <motion.footer
           variants={fade}
           className="mt-16 pt-6 border-t border-neutral-200 dark:border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-3"
         >
@@ -598,7 +604,7 @@ export const Contact: React.FC = () => {
               Designed & Built with <span className="text-[#C3E41D]">♥</span>
             </span>
           </div>
-        </motion.div>
+        </motion.footer>
       </motion.div>
     </section>
   );

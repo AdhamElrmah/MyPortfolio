@@ -30,11 +30,22 @@ import {
   SiMongoose,
   SiUbuntu,
   SiCplusplus,
+  SiAngular,
+  SiNgrx,
+  SiPrimeng,
+  SiC,
+  SiSqlalchemy,
+  SiPytest,
+  SiClickup,
+  SiGnubash,
 } from "react-icons/si";
 import { FaAws } from "react-icons/fa";
 import { TbApi, TbBrandVscode } from "react-icons/tb";
 
-const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string; style?: React.CSSProperties }>> = {
+const iconMap: Record<
+  string,
+  React.ComponentType<{ size?: number; className?: string; style?: React.CSSProperties }>
+> = {
   react: SiReact,
   typescript: SiTypescript,
   nextjs: SiNextdotjs,
@@ -68,6 +79,14 @@ const iconMap: Record<string, React.ComponentType<{ size?: number; className?: s
   mongoose: SiMongoose,
   ubuntu: SiUbuntu,
   cpp: SiCplusplus,
+  angular: SiAngular,
+  ngrx: SiNgrx,
+  primeng: SiPrimeng,
+  c: SiC,
+  sqlalchemy: SiSqlalchemy,
+  pytest: SiPytest,
+  clickup: SiClickup,
+  bash: SiGnubash,
 };
 
 interface SkillIconProps {
@@ -77,7 +96,12 @@ interface SkillIconProps {
   style?: React.CSSProperties;
 }
 
-export const SkillIcon: React.FC<SkillIconProps> = ({ name, size = 20, className = "", style }) => {
+export const SkillIcon: React.FC<SkillIconProps> = ({
+  name,
+  size = 20,
+  className = "",
+  style,
+}) => {
   const Icon = iconMap[name];
   if (!Icon) return <SiReact size={size} className={className} style={style} />;
   return <Icon size={size} className={className} style={style} />;

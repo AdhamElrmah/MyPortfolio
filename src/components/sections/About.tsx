@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import aboutImage from "../../assets/about.png";
+import aboutImage from "../../assets/about.webp";
 import { useCountUp } from "../../hooks/useCountUp";
 
 const AnimatedStat: React.FC<{ end: number; suffix: string; label: string }> = ({ end, suffix, label }) => {
@@ -51,7 +51,11 @@ export const About: React.FC = () => {
             <div className="aspect-[4/5] overflow-hidden bg-neutral-100 dark:bg-neutral-900 rounded-xl">
               <img
                 src={aboutImage}
-                alt="Adham"
+                alt="Portrait of Adham Elrmah"
+                width={800}
+                height={760}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
               />
             </div>
@@ -107,28 +111,29 @@ export const About: React.FC = () => {
         >
           <div className="space-y-4 lg:space-y-3 text-base xl:text-lg text-neutral-500 dark:text-neutral-400 font-['Antic'] max-w-xl mx-auto lg:mx-0">
             <p>
-              I am a Software Engineer based in Egypt, dedicated to building
-              high-performance web applications that provide meaningful user
-              experiences. My journey in tech is driven by a passion for solving
-              complex problems and a commitment to continuous learning.
+              I am a Frontend &amp; Full-Stack Software Engineer based in
+              Alexandria, Egypt, and a Computer Engineering student (graduating
+              2027) building scalable web applications with Angular, React,
+              Node.js, and FastAPI.
             </p>
             <p>
-              With expertise in modern web technologies, I focus on writing
-              clean, maintainable code and designing interfaces that are both
-              functional and visually stunning. I believe that every line of
-              code should contribute to a better, more human-centric digital
-              world.
+              Currently serving as the sole frontend engineer on Medora — a
+              multi-tenant clinic SaaS built by an 11-member graduation team —
+              and Team Lead of 4 developers on ByDrive, named one of the best
+              projects in the DEPI program, alongside internships at ITI and
+              Beeviro.
             </p>
           </div>
 
           <div className="grid grid-cols-3 sm:justify-center lg:flex lg:justify-start gap-8 sm:gap-12 mt-8 lg:mt-6">
-            <AnimatedStat end={2} suffix="+" label="Years Exp." />
-            <AnimatedStat end={15} suffix="+" label="Projects" />
-            <AnimatedStat end={10} suffix="+" label="Tech Stack" />
+            <AnimatedStat end={3} suffix="+" label="Years Coding" />
+            <AnimatedStat end={10} suffix="+" label="Projects" />
+            <AnimatedStat end={20} suffix="+" label="Tech Stack" />
           </div>
 
           <motion.div className="mt-8 lg:mt-6 flex justify-center lg:justify-start">
             <button
+              type="button"
               onClick={() => document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' })}
               className="px-10 py-4 rounded-full border border-[#C3E41D] cursor-pointer text-[#C3E41D] font-bold text-xs tracking-[0.2em] uppercase hover:bg-[#C3E41D] hover:text-black transition-all duration-300 hover:shadow-[0_0_40px_rgba(195,228,29,0.2)]"
             >

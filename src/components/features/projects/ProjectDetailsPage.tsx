@@ -2,8 +2,10 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { projects } from "../../../data/projects";
+import type { ProjectDecision } from "../../../types/project";
 import { useTheme } from "../../../hooks/useTheme";
 import { Navbar } from "../../layout/Navbar";
+import { NotFoundPage } from "../../common/NotFoundPage";
 
 /* ─── Fade-up animation wrapper ───────────────────── */
 const FadeUp: React.FC<{
@@ -27,6 +29,9 @@ export const ProjectDetailsPage: React.FC = () => {
   const navigate = useNavigate();
   const { isDark, toggleTheme } = useTheme();
 
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [activeGallery, setActiveGallery] = useState(0);
+
   const project = projects.find((p) => p.id === Number(id));
   const currentIndex = projects.findIndex((p) => p.id === Number(id));
   const otherProjects = projects
@@ -37,23 +42,22 @@ export const ProjectDetailsPage: React.FC = () => {
     window.scrollTo(0, 0);
   }, [id]);
 
-  if (!project) return null;
-
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-  const [activeGallery, setActiveGallery] = useState(0);
-
   // Keyboard navigation for lightbox
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    if (lightboxIndex === null || !project.gallery) return;
+    if (lightboxIndex === null || !project?.gallery) return;
     if (e.key === "Escape") setLightboxIndex(null);
     if (e.key === "ArrowRight" && lightboxIndex < project.gallery.length - 1) setLightboxIndex(lightboxIndex + 1);
     if (e.key === "ArrowLeft" && lightboxIndex > 0) setLightboxIndex(lightboxIndex - 1);
-  }, [lightboxIndex, project.gallery]);
+  }, [lightboxIndex, project]);
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
+
+  if (!project) {
+    return <NotFoundPage />;
+  }
 
   return (
     <div
@@ -533,7 +537,7 @@ export const ProjectDetailsPage: React.FC = () => {
 
                 {Array.isArray(section.content) ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {section.content.map((item: any, i: number) => (
+                    {(section.content as ProjectDecision[]).map((item: ProjectDecision, i: number) => (
                       <motion.div
                         key={i}
                         initial={{ opacity: 0, y: 15 }}

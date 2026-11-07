@@ -20,11 +20,6 @@ export const AllProjectsPage: React.FC = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Reset page on filter change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [activeFilter]);
-
   const filtered =
     activeFilter === "All"
       ? projects
@@ -187,7 +182,11 @@ export const AllProjectsPage: React.FC = () => {
             {allCategories.map((cat) => (
               <button
                 key={cat}
-                onClick={() => setActiveFilter(cat)}
+                type="button"
+                onClick={() => {
+                  setActiveFilter(cat);
+                  setCurrentPage(1);
+                }}
                 className={`relative shrink-0 px-5 py-2 rounded-full text-[10px] font-mono tracking-[0.15em] uppercase transition-all duration-300 cursor-pointer ${
                   activeFilter === cat
                     ? "text-black dark:text-black"
@@ -293,6 +292,7 @@ export const AllProjectsPage: React.FC = () => {
             >
               {/* Previous */}
               <button
+                type="button"
                 onClick={() => goToPage(currentPage - 1)}
                 disabled={currentPage === 1}
                 aria-label="Previous page"
@@ -321,6 +321,7 @@ export const AllProjectsPage: React.FC = () => {
                   (page) => (
                     <button
                       key={page}
+                      type="button"
                       onClick={() => goToPage(page)}
                       aria-label={`Page ${page}`}
                       aria-current={
@@ -355,6 +356,7 @@ export const AllProjectsPage: React.FC = () => {
 
               {/* Next */}
               <button
+                type="button"
                 onClick={() => goToPage(currentPage + 1)}
                 disabled={currentPage === totalPages}
                 aria-label="Next page"

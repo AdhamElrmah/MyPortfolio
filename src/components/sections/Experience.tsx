@@ -86,7 +86,18 @@ const ExperienceCard: React.FC<{
       >
         <div
           onClick={onToggle}
-          className="relative cursor-pointer rounded-2xl border border-neutral-200 dark:border-white/[0.08] bg-white/80 dark:bg-white/[0.02] backdrop-blur-sm p-6 md:p-8 hover:border-[#C3E41D]/40 hover:shadow-[0_0_40px_rgba(195,228,29,0.08)] transition-all duration-500 group/card"
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              onToggle();
+            }
+          }}
+          role="button"
+          tabIndex={0}
+          aria-expanded={isExpanded}
+          aria-controls={`exp-highlights-${index}`}
+          aria-label={`Toggle details for ${exp.role} at ${exp.company}`}
+          className="relative cursor-pointer rounded-2xl border border-neutral-200 dark:border-white/[0.08] bg-white/80 dark:bg-white/[0.02] backdrop-blur-sm p-6 md:p-8 hover:border-[#C3E41D]/40 hover:shadow-[0_0_40px_rgba(195,228,29,0.08)] transition-all duration-500 group/card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C3E41D]"
         >
           {/* Accent corner */}
           <div className="absolute top-0 right-0 w-20 h-20 overflow-hidden rounded-tr-2xl pointer-events-none">
@@ -160,6 +171,7 @@ const ExperienceCard: React.FC<{
           <AnimatePresence>
             {isExpanded && (
               <motion.div
+                id={`exp-highlights-${index}`}
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}

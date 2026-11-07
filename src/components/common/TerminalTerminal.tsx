@@ -3,18 +3,19 @@ import { motion, AnimatePresence } from "framer-motion";
 import { skillsRow1, skillsRow2, skillsRow3 } from "../../data/skills";
 import { projects } from "../../data/projects";
 
-const projectList = projects
+const projectList = [...projects]
   .sort((a, b) => a.id - b.id)
   .map((p) => `  [${String(p.id).padStart(2, "0")}] ${p.title} — ${p.category.toLowerCase()}`)
   .join("\n");
 
 const commands: Record<string, string> = {
-  help: "Available commands:\n- about      : Print my short bio\n- skills     : List my tech stack\n- projects   : Browse my projects\n- contact    : Show my contact info\n- education  : Academic background\n- clear      : Clear the terminal\n- sudo hire me : ???",
-  about: "Adham Elrmah — Software Engineer based in Egypt.\nSpecializing in high-performance web applications with React, TypeScript, and Node.js.\nCurrently building full-stack solutions with the MERN stack.\n\n  → 8 projects  |  12+ technologies  |  1 year ALX scholarship",
+  help: "Available commands:\n- about      : Print my short bio\n- experience : View my internships & training\n- skills     : List my tech stack\n- projects   : Browse my projects\n- contact    : Show my contact info\n- education  : Academic background\n- clear      : Clear the terminal\n- sudo hire me : ???",
+  about: "Adham Elrmah — Software Engineer | Frontend & Full-Stack (Alexandria, Egypt).\nBuilding full-stack web applications with Angular, React, Node.js, and FastAPI.\nSole frontend engineer on Medora (multi-tenant clinic SaaS) & Team Lead on ByDrive.\n\n  → ITI & Beeviro Intern  |  DEPI & ALX Alumni  |  AIET Class of 2027",
+  experience: "Experience & Training:\n  • Web Development Intern – Angular | ITI (08/2026 – 09/2026)\n  • Web Developer Intern | Beeviro, Remote (04/2026 – 06/2026)\n  • React Frontend Web Developer | DEPI (07/2025 – 01/2026)\n  • Software Engineer Trainee | ALX Scholarship (11/2023 – 08/2024)",
   skills: `Frontend & UI:\n  ${skillsRow1.map(s => s.name).join(", ")}\n\nBackend & Databases:\n  ${skillsRow2.map(s => s.name).join(", ")}\n\nTools & DevOps:\n  ${skillsRow3.map(s => s.name).join(", ")}`,
   projects: `All Projects (${projects.length}):\n${projectList}\n\nRun 'open <id>' to view a project page.`,
-  contact: "Email    : adhamelrmah@gmail.com\nGitHub   : github.com/AdhamElrmah\nLinkedIn : linkedin.com/in/adham-elrmah",
-  education: "ALX Software Engineering — 12-month scholarship (ALX Africa)\n  → C, Python, Shell, Linux, DevOps, Networking\n\nAIET — BSc Computer Engineering\n  → Full-stack capstone project (ByDrive)",
+  contact: "Email    : adhamelrmah@gmail.com\nPhone    : +20 122 553 3120\nWebsite  : adhamelrmah.online\nGitHub   : github.com/AdhamElrmah\nLinkedIn : linkedin.com/in/adham-elrmah",
+  education: "AIET — Bachelor of Computer Engineering (2022 – 2027 Expected | GPA: 3.0 / 4.0)\n  → Graduation Project: Medora – Multi-Tenant Clinic Management SaaS (Angular 21 SSR)\n\nCertifications:\n  → DEPI React Frontend  |  ITI Angular Web Dev  |  Beeviro Internship",
 };
 
 export const TerminalTerminal: React.FC = () => {
@@ -120,12 +121,13 @@ export const TerminalTerminal: React.FC = () => {
       <AnimatePresence>
         {!isOpen && (
           <motion.button
+            type="button"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             whileHover={{ scale: 1.1 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 left-6 lg:left-auto lg:right-20 z-50 w-11 h-11 rounded-full bg-neutral-900 border border-neutral-700 text-[#C3E41D] flex items-center justify-center shadow-lg hover:shadow-[0_0_20px_rgba(195,228,29,0.2)] transition-all cursor-hover group"
+            className="fixed bottom-6 left-6 lg:left-auto lg:right-20 z-50 w-11 h-11 rounded-full bg-neutral-900 border border-neutral-700 text-[#C3E41D] flex items-center justify-center shadow-lg hover:shadow-[0_0_20px_rgba(195,228,29,0.2)] transition-all cursor-hover group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C3E41D]"
             aria-label="Open Terminal"
           >
             <svg
@@ -161,10 +163,15 @@ export const TerminalTerminal: React.FC = () => {
           >
             {/* Header */}
             <div className="bg-neutral-900 border-b border-neutral-800 px-4 py-2 flex items-center justify-between">
-              <div className="flex gap-2">
-                <div className="w-3 h-3 rounded-full bg-red-500 cursor-pointer" onClick={() => setIsOpen(false)} />
-                <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                <div className="w-3 h-3 rounded-full bg-green-500" />
+              <div className="flex gap-2 items-center">
+                <button
+                  type="button"
+                  aria-label="Close terminal"
+                  onClick={() => setIsOpen(false)}
+                  className="w-3 h-3 rounded-full bg-red-500 hover:opacity-80 cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-400"
+                />
+                <span className="w-3 h-3 rounded-full bg-yellow-500 inline-block" aria-hidden="true" />
+                <span className="w-3 h-3 rounded-full bg-green-500 inline-block" aria-hidden="true" />
               </div>
               <span className="text-neutral-500 text-xs">adham@portfolio ~ bash</span>
             </div>
@@ -191,6 +198,7 @@ export const TerminalTerminal: React.FC = () => {
                 <input
                   ref={inputRef}
                   type="text"
+                  aria-label="Terminal command prompt"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   className="flex-1 bg-transparent border-none outline-none text-[#C3E41D]"

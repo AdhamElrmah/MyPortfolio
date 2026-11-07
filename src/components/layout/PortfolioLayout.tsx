@@ -65,7 +65,7 @@ export const PortfolioLayout: React.FC = () => {
         toggleTheme={toggleTheme}
         activeSection={activeSection}
       />
-      <div className="w-full">
+      <main id="main-content" tabIndex={-1} className="w-full focus:outline-none">
         <Hero />
         <About />
         <TechStack />
@@ -73,7 +73,7 @@ export const PortfolioLayout: React.FC = () => {
         <Experience />
         <Education />
         <Contact />
-      </div>
+      </main>
     </div>
   );
 };

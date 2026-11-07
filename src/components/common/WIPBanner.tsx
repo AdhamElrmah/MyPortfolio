@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 export const WIPBanner: React.FC = () => {
   return (
     <motion.div 
+      role="status"
+      aria-label="Work in progress notice"
       initial={{ y: -50 }}
       animate={{ y: 0 }}
       className="fixed top-0 left-0 w-full z-[100] bg-[#C3E41D] text-black py-2 px-4 flex items-center justify-center gap-2 md:gap-4 overflow-hidden shadow-[0_4px_20px_rgba(195,228,29,0.3)]"

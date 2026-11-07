@@ -31,9 +31,9 @@ export const projects: Project[] = [
     category: "FULL-STACK WEB APPLICATION",
     industry: "E-commerce / Mobility",
     description:
-      "End-to-end car rental platform combining real-time availability and secure booking.",
-    duration: "6 months (DEPI Capstone Project)",
-    role: "Team Lead & Full-Stack Developer",
+      "End-to-end car rental platform led as Team Lead of 4 developers — named one of the best projects in the DEPI program.",
+    duration: "Jul 2025 – Jan 2026 (DEPI Capstone)",
+    role: "Team Lead (4 Developers) & Full-Stack Developer",
     tech: [
       "React 19.1.1",
       "Node.js",

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import cvFile from "../../assets/Adham-Elrmah.pdf";
+import cvFile from "../../assets/Adham_Elrmah_CV.pdf";
 
 interface SocialLink {
   label: string;

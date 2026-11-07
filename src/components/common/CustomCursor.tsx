@@ -77,10 +77,12 @@ export const CustomCursor: React.FC = () => {
     <>
       <div
         ref={dotRef}
+        aria-hidden="true"
         className={`cursor-dot ${hovering ? "hovering" : ""}`}
       />
       <div
         ref={ringRef}
+        aria-hidden="true"
         className={`cursor-ring ${hovering ? "hovering" : ""}`}
       />
     </>
